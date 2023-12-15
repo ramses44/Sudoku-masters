@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python3 gen_server.py --threads 12 --port 12122 --generator_path ...
