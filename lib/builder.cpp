@@ -1,5 +1,6 @@
 #include <ctime>
 #include <random>
+#include <future>
 #include "builder.h"
 
 std::vector<std::vector<Cell>> SudokuBuilder::GetBaseField(size_t size) {
@@ -20,7 +21,7 @@ std::vector<std::vector<Cell>> SudokuBuilder::GetBaseField(size_t size) {
     return std::move(res);
 }
 
-Sudoku SudokuBuilder::Build(SudokuBuilder::Difficulty difficulty) {
+Sudoku SudokuBuilder::Build(Difficulty difficulty) {
     GenerateField();
 
     size_t minimumThrow = 0;
@@ -111,7 +112,7 @@ void SudokuBuilder::GenerateField() {
     }
 }
 
-bool SudokuBuilder::TryThrowCell(SudokuBuilder::Difficulty difficulty) {
+bool SudokuBuilder::TryThrowCell(Difficulty difficulty) {
     std::random_device rand;
     size_t x, y;
 
@@ -121,26 +122,19 @@ bool SudokuBuilder::TryThrowCell(SudokuBuilder::Difficulty difficulty) {
     } while (_sudoku[x][y].number == 0);
 
     _sudoku[x][y].number = 0;
-    auto solver = SudokuSolver(_sudoku);
-    std::optional<Sudoku> res;
 
-    switch (difficulty) {
-        case Difficulty::easy:
-            res = solver.EasySolve();
-            break;
-        case Difficulty::medium:
-            res = solver.MediumSolve();
-            break;
-        case Difficulty::hard:
-            res = solver.HardSolve();
-            break;
-    }
+    auto forward_solved = std::async([&] () {return SudokuSolver(_sudoku, false).Solve(difficulty);});
+    auto reverse_solved = std::async([&] () {return SudokuSolver(_sudoku, true).Solve(difficulty);});
 
-    if (!res.has_value()) {
+    auto res1 = forward_solved.get();
+    auto res2 = reverse_solved.get();
+
+    if (!res1.has_value() || !res2.has_value() || res1.value() != res2.value()) {
         _sudoku[x][y].number = _sudoku[x][y].expected_number;
+        return false;
     }
 
-    return res.has_value();
+    return true;
 }
 
 void SudokuBuilder::Transpose() {

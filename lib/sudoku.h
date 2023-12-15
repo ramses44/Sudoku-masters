@@ -33,7 +33,9 @@ public:
 
     bool SetNumber(int number, int row, int col);
 
-    std::string ToString() const;
+    std::string ToStringPretty() const;
+
+    std::string ToString(bool solved = false) const;
 
 protected:
     size_t _size;

@@ -171,7 +171,7 @@ bool Sudoku::SetNumber(int number, int row, int col) {
     return number == _field[row][col].expected_number;
 }
 
-std::string Sudoku::ToString() const {
+std::string Sudoku::ToStringPretty() const {
     std::string res = "┌";
     for (int i = 0; i < _size - 1; ++i) {
         res += "─┬";
@@ -207,6 +207,19 @@ std::string Sudoku::ToString() const {
     }
     res += "─┘";
     res += "\n";
+
+    return std::move(res);
+}
+
+std::string Sudoku::ToString(bool solved) const {
+    std::string res;
+
+    for (const auto& row : _field) {
+        for (const auto& cell : row) {
+            res += std::to_string(solved ? cell.expected_number : cell.number) + " ";
+        }
+        res += "\n";
+    }
 
     return std::move(res);
 }

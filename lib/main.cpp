@@ -1,25 +1,50 @@
-#include <iostream>
-#include "builder.h"
-#include <iostream>
 #include <ctime>
+#include <iostream>
 #include <random>
+#include "builder.h"
 
-int main() {
+int main(int argc, char** argv) {
     std::setlocale(LC_ALL, "en_US.UTF-8");
-    clock_t start = clock();
 
-    auto s = SudokuBuilder(16).Build(SudokuBuilder::medium);
-    std::cout << s.ToString() << "\n";
-    clock_t end = clock();
+    size_t size = 9;
+    Difficulty difficulty = Difficulty::medium;
+    int threads_count = 8;
 
-    auto solved = SudokuSolver(s).MediumSolve();
+    for (int i = 2; i < argc; i += 2) {
+        std::string arg_name(argv[i - 1]);
+        std::string arg_value(argv[i]);
 
-    if (solved.has_value())
-        std::cout << solved.value().ToString() << "\n";
-    else
-        std::cout << "Solution not found!\n";
+        if (arg_name == "--size") {
+            try {
+                size = strtoull(arg_value.c_str(), nullptr, 10);
+            } catch(...) {
+                throw std::invalid_argument("Invalid size param");
+            }
+        } else if (arg_name == "--difficulty") {
+            if (arg_value == "easy") {
+                difficulty = Difficulty::easy;
+            } else if (arg_value == "medium") {
+                difficulty = Difficulty::medium;
+            } else if (arg_value == "hard") {
+                difficulty = Difficulty::hard;
+            } else {
+                throw std::invalid_argument("Invalid difficulty param");
+            }
+        } else if (arg_name == "--threads") {
+            try {
+                threads_count = strtol(arg_value.c_str(), nullptr, 10);
+            } catch(...) {
+                throw std::invalid_argument("Invalid threads param");
+            }
+        } else {
+            throw std::invalid_argument("Unknown argument " + arg_name);
+        }
+    }
 
-    std::cout << (end - start) / CLOCKS_PER_SEC << std::endl;
+    SudokuSolver::threads_available = threads_count;
+    auto s = SudokuBuilder(size).Build(difficulty);
+
+    std::cout << s.ToString(false) << "\n" << s.ToString(true);
 
     return 0;
 }

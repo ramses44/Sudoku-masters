@@ -3,12 +3,6 @@
 
 class SudokuBuilder {
 public:
-    enum Difficulty {
-        easy,
-        medium,
-        hard
-    };
-
     enum Dimension {
         horizontal,
         vertical

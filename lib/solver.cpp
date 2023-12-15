@@ -1,6 +1,9 @@
+#include <thread>
 #include "solver.h"
 
-std::optional<Sudoku> SudokuSolver::EasySolve(bool save) {
+std::atomic<int> SudokuSolver::threads_available = 2;
+
+std::optional<Sudoku> SudokuSolver::_EasySolve(bool save) {
     bool changed = true;
     std::optional<Sudoku> saved;
 
@@ -31,55 +34,36 @@ std::optional<Sudoku> SudokuSolver::EasySolve(bool save) {
     return _sudoku.IsFilled() ? std::optional(_sudoku) : std::nullopt;
 }
 
-std::optional<Sudoku> SudokuSolver::MediumSolve() {
-    if (EasySolve(false).has_value()) {
+std::optional<Sudoku> SudokuSolver::_MediumSolve() {
+    if (_EasySolve(false).has_value()) {
         return _sudoku;
     }
 
     _solved = std::nullopt;
     TrySolve(normal_rec_depth);
 
-    if (!_solved.has_value()) {
-        return std::nullopt;
-    }
-
-    Sudoku saved = Sudoku(_solved.value());
-
-    TrySolve(normal_rec_depth, true);
-
-    return saved == _solved.value() ? std::optional(saved) : std::nullopt;
+    return _solved;
 }
 
-std::optional<Sudoku> SudokuSolver::HardSolve() {
-    if (EasySolve(false).has_value()) {
+std::optional<Sudoku> SudokuSolver::_HardSolve() {
+    if (_EasySolve(false).has_value()) {
         return _sudoku;
     }
 
     _solved = std::nullopt;
     TrySolve(enough_rec_depth);
 
-    if (!_solved.has_value()) {
-        return std::nullopt;
-    }
-
-    Sudoku saved = Sudoku(_solved.value());
-
-    TrySolve(enough_rec_depth, true);
-
-    return saved == _solved.value() ? std::optional(saved) : std::nullopt;
+    return _solved;
 }
 
-std::set<size_t> SudokuSolver::GetAvailableNumbersForCell(size_t i, size_t j) const {
-    std::set<size_t> res;
-
-    for (size_t k = 1; k <= _sudoku.size(); ++k) {
-        res.insert(k);
-    }
+std::vector<size_t> SudokuSolver::GetAvailableNumbersForCell(size_t i, size_t j) const {
+    std::vector<bool> avail(_sudoku.size() + 1, true);
+    avail[0] = false;
 
     // Sift for row and cols
     for (int p = 0; p < _sudoku.size(); ++p) {
-        res.erase(_sudoku[i][p].number);
-        res.erase(_sudoku[p][j].number);
+        avail[_sudoku[i][p].number] = false;
+        avail[_sudoku[p][j].number] = false;
     }
 
     // Sift for section
@@ -92,14 +76,23 @@ std::set<size_t> SudokuSolver::GetAvailableNumbersForCell(size_t i, size_t j) co
         for (size_t jj = sj * _sudoku.SubSize();
              jj < (sj + 1) * _sudoku.SubSize();
              ++jj) {
-            res.erase(_sudoku[ii][jj].number);
+            avail[_sudoku[ii][jj].number] = false;
+        }
+    }
+
+    std::vector<size_t> res;
+    res.reserve(avail.size());
+
+    for (size_t k = 0; k < avail.size(); ++k) {
+        if (avail[k]) {
+            res.push_back(k);
         }
     }
 
     return std::move(res);
 }
 
-void SudokuSolver::TrySolve(size_t max_rec_depth, bool reverse) {
+void SudokuSolver::TrySolve(size_t max_rec_depth) {
     if (max_rec_depth < 0) {
         return;
     }
@@ -130,28 +123,62 @@ void SudokuSolver::TrySolve(size_t max_rec_depth, bool reverse) {
         }
     }
 
-    auto try_substitute = [&](size_t num) {
-        _sudoku[mi][mj].number = num;
-
-        if (EasySolve(false).has_value()) {
-            _solved = Sudoku(_sudoku);
+    auto try_solve = [&saved](SudokuSolver* executor, size_t max_rec_depth, bool threaded = false) {
+        if (executor->_EasySolve(false).has_value()) {
+            executor->_solved = Sudoku(executor->_sudoku);
         } else {
-            TrySolve(max_rec_depth - 1);
+            executor->TrySolve(max_rec_depth - 1);
         }
 
-        _sudoku = Sudoku(saved);
+        executor->_sudoku = Sudoku(saved);
 
-        return _solved.has_value();
+        if (threaded) ++threads_available;
     };
 
     auto avail = GetAvailableNumbersForCell(mi, mj);
-    if (reverse) {
-        for (auto it = avail.rbegin(); it != avail.rend(); ++it) {
-            if (try_substitute(*it)) return;
+
+    std::vector<SudokuSolver*> executors;
+    std::vector<std::thread> threads;
+
+    for (size_t i = _reverse ? avail.size() : 1; (_reverse ? (i > 0) : (i <= avail.size())); i += _reverse ? -1 : 1) {
+        if (_solved.has_value()) {
+            break;
         }
-    } else {
-        for (auto it = avail.begin(); it != avail.end(); ++it) {
-            if (try_substitute(*it)) return;
+
+        _sudoku[mi][mj].number = avail[i - 1];
+
+        int threads_avail = threads_available--;
+        if (threads_avail <= 0) {
+            ++threads_available;
+
+            try_solve(this, max_rec_depth);
+        } else {
+            executors.push_back(new SudokuSolver(_sudoku, _reverse));
+            threads.emplace_back(try_solve, executors.back(), max_rec_depth, true);
         }
     }
+
+    for (auto& thread : threads) {
+        thread.join();
+    }
+
+    for (auto& executor : executors) {
+        if (!_solved.has_value() and executor->_solved.has_value()) {
+            _solved = std::move(executor->_solved);
+        }
+        delete executor;
+    }
+}
+
+std::optional<Sudoku> SudokuSolver::Solve(Difficulty difficulty) {
+    switch (difficulty) {
+        case Difficulty::easy:
+            return _EasySolve();
+        case Difficulty::medium:
+            return _MediumSolve();
+        case Difficulty::hard:
+            return _HardSolve();
+    }
+
+    return std::nullopt;
 }
