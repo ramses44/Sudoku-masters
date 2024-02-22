@@ -1,0 +1,60 @@
+databaseChangeLog:
+- changeSet:
+    id:  3
+    author:  ramses44
+    remarks: Create `game` table
+    changes:
+    - createTable:
+        tableName: game
+        remarks: Table of all types sudoku-games
+        columns:
+        - column:
+            name:  id
+            type:  INT
+            constraints:
+              primaryKey:  true
+              nullable:  false
+        - column:
+            name:  type
+            type:  VARCHAR(16)
+            remarks:  Game type ( Classic / Duel / Cooperative )
+            constraints:
+              nullable:  false
+              defaultValue: Classic
+        - column:
+            name:  player_1_id
+            type:  INT
+            remarks: Game owner
+            constraints:
+              nullable:  false
+              foreignKeyName: game_player_1_fk
+              references: user(id)
+        - column:
+            name:  player_2_id
+            type:  INT
+            remarks: Additional player; only if the game is multiplayer
+            constraints:
+              nullable:  true
+              foreignKeyName: game_player_2_fk
+              references: user(id)
+        - column:
+            name:  sudoku_id
+            type:  INT
+            remarks: Relation to `sudoku` table
+            constraints:
+              nullable:  false
+              foreignKeyName: game_sudoku_fk
+              references: sudoku(id)
+        - column:
+            name:  status
+            type:  ENUM('IN_PROGRESS', 'WON', 'LOST', 'DRAW')
+            constraints:
+              nullable:  false
+              defaultValueBoolean:  'IN_PROGRESS'
+
+
+
+
+
+
+

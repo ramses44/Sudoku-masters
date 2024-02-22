@@ -1,0 +1,28 @@
+databaseChangeLog:
+- changeSet:
+    id:  7
+    author:  ramses44
+    remarks: Create `contact` table
+    changes:
+    - createTable:
+        tableName: contact
+        remarks: Table for relationship beetwen users (contacts)
+        columns:
+        - column:
+            name:  user_id
+            type:  INT
+            constraints:
+              nullable:  false
+              foreignKeyName: contact_user_fk_1
+              references: user(id)
+        - column:
+            name:  contact_user_id
+            type:  INT
+            constraints:
+              nullable:  false
+              foreignKeyName: contact_user_fk_2
+              references: user(id)
+    - addPrimaryKey:
+        tableName: contact
+        constraintName: pk_contact
+        columnNames: user_id, contact_user_id
