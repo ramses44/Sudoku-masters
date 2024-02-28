@@ -8,7 +8,6 @@ int main(int argc, char** argv) {
 
     size_t size = 9;
     Difficulty difficulty = Difficulty::medium;
-    int threads_count = 8;
 
     for (int i = 2; i < argc; i += 2) {
         std::string arg_name(argv[i - 1]);
@@ -30,18 +29,11 @@ int main(int argc, char** argv) {
             } else {
                 throw std::invalid_argument("Invalid difficulty param");
             }
-        } else if (arg_name == "--threads") {
-            try {
-                threads_count = strtol(arg_value.c_str(), nullptr, 10);
-            } catch(...) {
-                throw std::invalid_argument("Invalid threads param");
-            }
         } else {
             throw std::invalid_argument("Unknown argument " + arg_name);
         }
     }
 
-    SudokuSolver::threads_available = threads_count;
     auto s = SudokuBuilder(size).Build(difficulty);
 
     std::cout << s.ToString(false) << "\n" << s.ToString(true);

@@ -1,7 +1,4 @@
-#include <thread>
 #include "solver.h"
-
-std::atomic<int> SudokuSolver::threads_available = 2;
 
 std::optional<Sudoku> SudokuSolver::_EasySolve(bool save) {
     bool changed = true;
@@ -17,7 +14,7 @@ std::optional<Sudoku> SudokuSolver::_EasySolve(bool save) {
         for (int i = 0; i < _sudoku.size(); ++i) {
             for (int j = 0; j < _sudoku.size(); ++j) {
                 if (_sudoku[i][j].number == 0) {
-                    auto nums = GetAvailableNumbersForCell(i, j);
+                    auto nums = _GetAvailableNumbersForCell(i, j);
                     if (nums.size() == 1) {
                         _sudoku[i][j].number = *nums.begin();
                         changed = true;
@@ -40,7 +37,7 @@ std::optional<Sudoku> SudokuSolver::_MediumSolve() {
     }
 
     _solved = std::nullopt;
-    TrySolve(normal_rec_depth);
+    _TrySolve(normal_rec_depth);
 
     return _solved;
 }
@@ -51,12 +48,12 @@ std::optional<Sudoku> SudokuSolver::_HardSolve() {
     }
 
     _solved = std::nullopt;
-    TrySolve(enough_rec_depth);
+    _TrySolve(enough_rec_depth);
 
     return _solved;
 }
 
-std::vector<size_t> SudokuSolver::GetAvailableNumbersForCell(size_t i, size_t j) const {
+std::vector<size_t> SudokuSolver::_GetAvailableNumbersForCell(size_t i, size_t j) const {
     std::vector<bool> avail(_sudoku.size() + 1, true);
     avail[0] = false;
 
@@ -92,7 +89,7 @@ std::vector<size_t> SudokuSolver::GetAvailableNumbersForCell(size_t i, size_t j)
     return std::move(res);
 }
 
-void SudokuSolver::TrySolve(size_t max_rec_depth) {
+void SudokuSolver::_TrySolve(size_t max_rec_depth) {
     if (max_rec_depth < 0) {
         return;
     }
@@ -110,7 +107,7 @@ void SudokuSolver::TrySolve(size_t max_rec_depth) {
                 continue;
             }
 
-            auto avail = GetAvailableNumbersForCell(i, j);
+            auto avail = _GetAvailableNumbersForCell(i, j);
             if (avail.empty()) {
                 return;
             }
@@ -123,50 +120,29 @@ void SudokuSolver::TrySolve(size_t max_rec_depth) {
         }
     }
 
-    auto try_solve = [&saved](SudokuSolver* executor, size_t max_rec_depth, bool threaded = false) {
-        if (executor->_EasySolve(false).has_value()) {
-            executor->_solved = Sudoku(executor->_sudoku);
+    auto try_substitute = [&](size_t num) {
+        _sudoku[mi][mj].number = num;
+
+        if (_EasySolve(false).has_value()) {
+            _solved = Sudoku(_sudoku);
         } else {
-            executor->TrySolve(max_rec_depth - 1);
+            _TrySolve(max_rec_depth - 1);
         }
 
-        executor->_sudoku = Sudoku(saved);
+        _sudoku = Sudoku(saved);
 
-        if (threaded) ++threads_available;
+        return _solved.has_value();
     };
 
-    auto avail = GetAvailableNumbersForCell(mi, mj);
-
-    std::vector<SudokuSolver*> executors;
-    std::vector<std::thread> threads;
-
-    for (size_t i = _reverse ? avail.size() : 1; (_reverse ? (i > 0) : (i <= avail.size())); i += _reverse ? -1 : 1) {
-        if (_solved.has_value()) {
-            break;
+    auto avail = _GetAvailableNumbersForCell(mi, mj);
+    if (_reverse) {
+        for (auto it = avail.rbegin(); it != avail.rend(); ++it) {
+            if (try_substitute(*it)) return;
         }
-
-        _sudoku[mi][mj].number = avail[i - 1];
-
-        int threads_avail = threads_available--;
-        if (threads_avail <= 0) {
-            ++threads_available;
-
-            try_solve(this, max_rec_depth);
-        } else {
-            executors.push_back(new SudokuSolver(_sudoku, _reverse));
-            threads.emplace_back(try_solve, executors.back(), max_rec_depth, true);
+    } else {
+        for (auto it = avail.begin(); it != avail.end(); ++it) {
+            if (try_substitute(*it)) return;
         }
-    }
-
-    for (auto& thread : threads) {
-        thread.join();
-    }
-
-    for (auto& executor : executors) {
-        if (!_solved.has_value() and executor->_solved.has_value()) {
-            _solved = std::move(executor->_solved);
-        }
-        delete executor;
     }
 }
 

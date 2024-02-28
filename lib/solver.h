@@ -30,12 +30,11 @@ protected:
 
     std::optional<Sudoku> _HardSolve();
 
-    std::vector<size_t> GetAvailableNumbersForCell(size_t i, size_t j) const;
+    std::vector<size_t> _GetAvailableNumbersForCell(size_t i, size_t j) const;
 
-    void TrySolve(size_t max_rec_depth);
+    void _TrySolve(size_t max_rec_depth);
 
     Sudoku _sudoku;
     std::optional<Sudoku> _solved;
     bool _reverse;
 };
-
