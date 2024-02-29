@@ -1,36 +1,32 @@
 databaseChangeLog:
 - changeSet:
-    id:  1
+    id:  2
     author:  ramses44
-    remarks: Create `user` table
+    remarks: Create `sudoku` table
     changes:
     - createTable:
-        tableName: user
-        remarks: Table of registered users
+        tableName: sudoku
+        remarks: Table of sudoku ever generated
         columns:
         - column:
             name:  id
             type:  INT
+            autoIncrement: true
             constraints:
               primaryKey:  true
               nullable:  false
         - column:
-            name:  username
-            type:  VARCHAR(32)
-            constraints:
-              primaryKey:  true
-              nullable:  false
-        - column:
-            name:  password_hash
-            type:  BINARY(32)
-            constraints:
-              nullable:  false
-        - column:
-            name:  alias
-            type:  VARCHAR(64)
-        - column:
-            name:  rating
+            name:  size
             type:  INT
             constraints:
               nullable:  false
-              defaultValueNumeric: 0
+        - column:
+            name:  difficulty
+            type:  VARCHAR(16)
+            constraints:
+              nullable:  false
+        - column:
+            name:  data
+            type:  BLOB
+            constraints:
+              nullable:  false

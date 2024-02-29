@@ -1,0 +1,28 @@
+databaseChangeLog:
+- changeSet:
+    id:  8
+    author:  ramses44
+    remarks: Create `user_game` table
+    changes:
+    - createTable:
+        tableName:  user_game
+        remarks:  Table for relationship between players and games
+        columns:
+        - column:
+            name:  user_id
+            type:  INT
+            constraints:
+              nullable:  false
+              foreignKeyName: players_user_fk
+              references: user(id)
+        - column:
+            name:  game_id
+            type:  INT
+            constraints:
+              nullable:  false
+              foreignKeyName: players_game_fk_2
+              references: game(id)
+    - addPrimaryKey:
+        tableName: user_game
+        constraintName: pk_players
+        columnNames: user_id, game_id

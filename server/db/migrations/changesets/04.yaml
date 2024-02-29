@@ -11,12 +11,13 @@ databaseChangeLog:
         - column:
             name:  id
             type:  INT
+            autoIncrement: true
             constraints:
               primaryKey:  true
               nullable:  false
         - column:
             name:  title
-            type:  INT
+            type:  VARCHAR(64)
             constraints:
               nullable:  false
         - column:

@@ -11,6 +11,7 @@ databaseChangeLog:
         - column:
             name:  id
             type:  INT
+            autoIncrement: true
             constraints:
               primaryKey:  true
               nullable:  false
@@ -21,22 +22,6 @@ databaseChangeLog:
             constraints:
               nullable:  false
               defaultValue: Classic
-        - column:
-            name:  player_1_id
-            type:  INT
-            remarks: Game owner
-            constraints:
-              nullable:  false
-              foreignKeyName: game_player_1_fk
-              references: user(id)
-        - column:
-            name:  player_2_id
-            type:  INT
-            remarks: Additional player; only if the game is multiplayer
-            constraints:
-              nullable:  true
-              foreignKeyName: game_player_2_fk
-              references: user(id)
         - column:
             name:  sudoku_id
             type:  INT

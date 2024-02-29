@@ -1,25 +1,25 @@
 databaseChangeLog:
 - changeSet:
-    id:  8
+    id:  9
     author:  ramses44
     remarks:  Add indexes
     changes:
     - createIndex:
-        indexName:  game_player_1_fk_index
-        tableName:  game
+        indexName:  players_user_index
+        tableName:  user_game
         associatedWith: foreignKey
         columns:  
         - column:
-            name: player_1_id
+            name: user_id
     - createIndex:
-        indexName:  game_player_2_fk_index
-        tableName:  game
+        indexName:  players_game_index
+        tableName:  user_game
         associatedWith: foreignKey
         columns:  
         - column:
-            name: player_2_id
+            name: game_id
     - createIndex:
-        indexName:  message_chat_fk_index
+        indexName:  message_chat_index
         tableName:  message
         associatedWith: foreignKey
         columns:  
@@ -42,8 +42,8 @@ databaseChangeLog:
         - column:
             name: type
     - createIndex:
-        indexName:  contact_user_fk_1_index
-        tableName:  contact
+        indexName:  user_contact_index
+        tableName:  user_contact
         columns:  
         - column:
             name: user_id

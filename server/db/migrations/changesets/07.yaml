@@ -5,7 +5,7 @@ databaseChangeLog:
     remarks: Create `contact` table
     changes:
     - createTable:
-        tableName: contact
+        tableName: user_contact
         remarks: Table for relationship beetwen users (contacts)
         columns:
         - column:
@@ -23,6 +23,6 @@ databaseChangeLog:
               foreignKeyName: contact_user_fk_2
               references: user(id)
     - addPrimaryKey:
-        tableName: contact
-        constraintName: pk_contact
+        tableName: user_contact
+        constraintName: pk_user_contact
         columnNames: user_id, contact_user_id

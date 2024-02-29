@@ -21,7 +21,7 @@ services:
     networks:
       - sm-network
     volumes:
-      - ./migrations:/db
+      - ./db/migrations:/db
     command: --defaultsFile=/db/liquibase.properties update
     environment:
       INSTALL_MYSQL: true
