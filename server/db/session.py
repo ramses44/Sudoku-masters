@@ -1,15 +1,13 @@
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.pool import NullPool
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
-import configparser
+from os import environ
 
-config = configparser.ConfigParser()
-config.read('server/.config')
-
-DATABASE_URL = config['global']['db_url']
+DATABASE_URL = environ.get('DB_URL')
 
 Base = declarative_base()
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(DATABASE_URL, echo=False, poolclass=NullPool)
 async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
