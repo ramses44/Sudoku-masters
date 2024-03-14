@@ -34,7 +34,7 @@ class User(Base):
                                     primaryjoin=UserContact.user_id==id,
                                     secondaryjoin=UserContact.contact_user_id==id,
                                     backref='user_id', lazy='joined')
-    chats = relationship('Chat', secondary='user_chat', back_populates='participants', lazy='joined')
+    chats = relationship('Chat', secondary='user_chat', back_populates='participants', lazy='selectin')
 
 
 class Sudoku(Base):
@@ -66,7 +66,7 @@ class Chat(Base):
     is_private = Column(Boolean, nullable=False, default=False)
 
     messages = relationship('Message', back_populates='chat', lazy='joined')
-    participants = relationship('User', secondary='user_chat', back_populates='chats', lazy='joined')
+    participants = relationship('User', secondary='user_chat', back_populates='chats', lazy='selectin')
 
 
 class Message(Base):
