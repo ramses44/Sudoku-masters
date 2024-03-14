@@ -1,5 +1,7 @@
-from sqlalchemy import Table, Column, Integer, String, Boolean, Enum, Text, ForeignKey, LargeBinary
+from sqlalchemy import Table, Column, Integer, String, Boolean, Enum, Text, ForeignKey, LargeBinary, DateTime
 from sqlalchemy.orm import relationship
+from datetime import datetime
+
 from db.session import Base
 
 Table('user_chat', Base.metadata, 
@@ -10,9 +12,12 @@ Table('user_game', Base.metadata,
       Column('user_id', Integer, ForeignKey('user.id'), primary_key=True),
       Column('game_id', Integer, ForeignKey('game.id'), primary_key=True))
 
-UserContact = Table('user_contact', Base.metadata,
-                    Column('user_id', Integer, ForeignKey('user.id'), primary_key=True),
-                    Column('contact_user_id', Integer, ForeignKey('user.id'), primary_key=True))
+
+class UserContact(Base):
+    __tablename__ = 'user_contact'
+
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    contact_user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
 
 
 class User(Base):
@@ -25,9 +30,9 @@ class User(Base):
     rating = Column(Integer, nullable=False, default=0)
 
     games = relationship('Game', secondary='user_game', back_populates='players', lazy='joined')
-    contacts = relationship('User', secondary=UserContact,
-                                    primaryjoin=UserContact.c.user_id==id,
-                                    secondaryjoin=UserContact.c.contact_user_id==id,
+    contacts = relationship('User', secondary=UserContact.__table__,
+                                    primaryjoin=UserContact.user_id==id,
+                                    secondaryjoin=UserContact.contact_user_id==id,
                                     backref='user_id', lazy='joined')
     chats = relationship('Chat', secondary='user_chat', back_populates='participants', lazy='joined')
 
@@ -72,6 +77,7 @@ class Message(Base):
     sender_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     type = Column(Enum('TEXT', 'SUDOKU', 'CONTACT', 'CHAT_INVITATION', 'GAME_SUGGESTION'), nullable=False, default='TEXT')
     data = Column(Text)
+    sending_datetime = Column(DateTime(timezone=True), nullable=False, default=datetime.now)
 
     chat = relationship('Chat', foreign_keys=[chat_id], lazy='joined')
     sender = relationship('User', foreign_keys=[sender_id], lazy='joined')

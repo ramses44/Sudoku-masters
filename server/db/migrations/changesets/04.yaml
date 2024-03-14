@@ -22,7 +22,7 @@ databaseChangeLog:
               nullable:  false
         - column:
             name:  is_private
-            type:  BOOL
+            type:  BOOLEAN
             constraints:
               nullable:  false
               defaultValueBoolean:  false

@@ -40,3 +40,8 @@ databaseChangeLog:
         - column:
             name: data
             type: TEXT
+        - column:
+            name: sending_datetime
+            type: TIMESTAMP
+            constraints:
+              nullable:  false
