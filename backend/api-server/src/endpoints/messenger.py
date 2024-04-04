@@ -1,27 +1,19 @@
-from flask import Flask, request, jsonify, Response, abort
+from flask import Blueprint, request, jsonify, Response, abort
 from flask_sse import sse
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 import json
-from hashlib import md5
-import jwt
-
 import logging
-from pathlib import Path
 from os import environ
 
 from db.session import async_session
-from db.models import *
+from db.models import User, Chat, Message, UserContact
+from tools.security import *
 
-PUB_KEY = Path(environ.get('PUBLIC_KEY_PATH')).read_text()
-PRV_KEY = Path(environ.get('PRIVATE_KEY_PATH')).read_text()
-JWT_ALGORITHM = environ.get('JWT_ALGORITHM', 'RS256')
+messenger = Blueprint('messenger', __name__)
 
-app = Flask(__name__)
-app.config['REDIS_URL'] = environ.get('REDIS_URL')
 
 @sse.before_request
 async def check_access():
@@ -47,52 +39,10 @@ async def check_access():
                     abort(Response('You are not a chat participant!', 403))
                 
                 
-app.register_blueprint(sse, url_prefix='/listen')
+messenger.register_blueprint(sse, url_prefix='/listen')
 
 
-def hash_password(password: str) -> bytes:
-    """Реализация функции хэширования пароля. Возвращает бинарный хэш"""
-    pwd_hash = md5(password.encode()).hexdigest()
-    return pwd_hash.encode()
-
-
-def encode_auth_token(user_id: int) -> str:
-    """Генерирует JWT токен, содержащий поле user-id, используя, указанные в константах параметры"""
-    token = jwt.encode({'user-id': user_id}, PRV_KEY, algorithm=JWT_ALGORITHM)
-    return token
-
-
-def decode_auth_token(token: str) -> int | None:
-    """Возвращает ID пользователя по токену. Если токен невалидный, возвращается None"""
-    try:
-        jwt_data = jwt.decode(token, PUB_KEY, algorithms=[JWT_ALGORITHM])
-        return jwt_data.get('user-id')
-    except Exception as err:
-        logging.error(err)
-
-
-def encode_invite_token(invitor_id: int, chat_id: int) -> str:
-    """Генерирует JWT токен, содержащий информацию о приглашении в чат, используя, указанные в константах параметры"""
-    token = jwt.encode({'invitor-id': invitor_id, 'chat-id': chat_id}, PRV_KEY, algorithm=JWT_ALGORITHM)
-    return token
-
-
-def decode_invite_token(token: str) -> tuple[int, int] | None:
-    """Возвращает котртеж из ID пригласителя и чата по токену. Если токен невалидный, возвращается None"""
-    try:
-        jwt_data = jwt.decode(token, PUB_KEY, algorithms=[JWT_ALGORITHM])
-        return (jwt_data['invitor-id'], jwt_data['chat-id']
-                ) if 'invitor-id' in jwt_data and 'chat-id' in jwt_data else None
-    except Exception as err:
-        logging.error(err)
-
-
-def is_valid_password(password: str) -> bool:
-    """Предикат, удовлетворяет ли пароль требованиям безопасности."""
-    return 8 <= len(password) <= 64
-
-
-@app.post('/signup')
+@messenger.post('/signup')
 async def signup() -> Response:
     data = json.loads(request.data.decode('utf-8'))
     username = data.get('username')
@@ -120,7 +70,7 @@ async def signup() -> Response:
     return jsonify({'auth-token': token})
 
 
-@app.post('/signin')
+@messenger.post('/signin')
 async def signin() -> Response:
     data = json.loads(request.data.decode('utf-8'))
     username = data.get('username')
@@ -146,7 +96,7 @@ async def signin() -> Response:
     return jsonify({'auth-token': token})
 
 
-@app.post('/add-contact/<username>')
+@messenger.post('/add-contact/<username>')
 async def add_contact(username: str) -> Response:
     data = json.loads(request.data.decode('utf-8'))
     token = data.get('auth-token')
@@ -172,7 +122,7 @@ async def add_contact(username: str) -> Response:
     return Response(status=200)
 
 
-@app.post('/join-chat/<int:chat_id>')
+@messenger.post('/join-chat/<int:chat_id>')
 async def join_chat(chat_id: int) -> Response:
     data = json.loads(request.data.decode('utf-8'))
     token = data.get('auth-token')
@@ -213,7 +163,7 @@ async def join_chat(chat_id: int) -> Response:
     return Response(status=200)
 
 
-@app.post('/get-invite-token/<int:chat_id>')
+@messenger.post('/get-invite-token/<int:chat_id>')
 async def get_invite_token(chat_id: int) -> Response:
     data = json.loads(request.data.decode('utf-8'))
     token = data.get('auth-token')
@@ -237,7 +187,7 @@ async def get_invite_token(chat_id: int) -> Response:
     return jsonify({'invite-token': token})
 
 
-@app.post('/create-chat')
+@messenger.post('/create-chat')
 async def create_chat() -> Response:
     data = json.loads(request.data.decode('utf-8'))
     token = data.get('auth-token')
@@ -263,7 +213,7 @@ async def create_chat() -> Response:
         return jsonify({'chat-id': chat.id})
         
 
-@app.post('/send-message/<chat_id>')
+@messenger.post('/send-message/<chat_id>')
 async def send_message(chat_id: int) -> Response:
     data = json.loads(request.data.decode('utf-8'))
     token = data.get('auth-token')
@@ -297,7 +247,3 @@ async def send_message(chat_id: int) -> Response:
                       channel=f'message.{chat_id}')
 
     return Response(status=200)
-
-
-if __name__ == '__main__':
-    app.run(environ.get('SERVER_HOST', '0.0.0.0'), environ.get('SERVER_PORT', 80))
