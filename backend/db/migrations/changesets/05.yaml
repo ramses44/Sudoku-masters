@@ -1,0 +1,47 @@
+databaseChangeLog:
+- changeSet:
+    id:  5
+    author:  ramses44
+    remarks: Create `message` table
+    changes:
+    - createTable:
+        tableName: message
+        remarks: Table of users` messages in chats
+        columns:
+        - column:
+            name:  id
+            type:  INT
+            autoIncrement: true
+            constraints:
+              primaryKey:  true
+              nullable:  false
+        - column:
+            name:  chat_id
+            type:  INT
+            constraints:
+              nullable:  false
+              foreignKeyName: message_chat_fk
+              referencedTableName: chat
+              referencedColumnNames: id
+        - column:
+            name:  sender_id
+            type:  INT
+            constraints:
+              nullable:  false
+              foreignKeyName: message_sender_fk
+              referencedTableName: user
+              referencedColumnNames: id
+        - column:
+            name:  type
+            type:  ENUM('TEXT', 'SUDOKU', 'CONTACT', 'CHAT_INVITATION')
+            constraints:
+              nullable:  false
+              defaultValue:  'TEXT'
+        - column:
+            name: data
+            type: TEXT
+        - column:
+            name: sending_datetime
+            type: TIMESTAMP
+            constraints:
+              nullable:  false

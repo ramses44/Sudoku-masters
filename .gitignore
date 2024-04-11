@@ -1,0 +1,6 @@
+.idea
+.vscode
+build
+server/redis
+server/*.sh
+app
