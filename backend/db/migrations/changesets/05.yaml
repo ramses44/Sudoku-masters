@@ -33,7 +33,7 @@ databaseChangeLog:
               referencedColumnNames: id
         - column:
             name:  type
-            type:  ENUM('TEXT', 'SUDOKU', 'CONTACT', 'CHAT_INVITATION', 'GAME_SUGGESTION')
+            type:  ENUM('TEXT', 'SUDOKU', 'CONTACT', 'CHAT_INVITATION')
             constraints:
               nullable:  false
               defaultValue:  'TEXT'

@@ -38,35 +38,37 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./redis/data:/data
+      - ./db/redis:/data
 
-  flask:
-    image: python:3.10
+  api:
+    build: 
+      dockerfile: api-server/Dockerfile
     environment:
       - DB_URL=mysql+aiomysql://root:password@mysql:3306/sudoku_masters
       - REDIS_URL=redis://:password@redis:6379
       - SERVER_HOST=0.0.0.0
       - SERVER_PORT=8080
-      - PUBLIC_KEY_PATH=/app/keys/signature.pub
-      - PRIVATE_KEY_PATH=/app/keys/signature.pem
+      - PUBLIC_KEY_PATH=/app/rsa-keys/signature.pub
+      - PRIVATE_KEY_PATH=/app/rsa-keys/signature.pem
       - JWT_ALGORITHM=RS256
     networks:
       - sm-network
     ports:
       - "8080:8080"
     depends_on:
-      - liquibase
-      - redis
-    working_dir: /app
-    volumes:
-      - ./db:/app/db
-      - ./keys:/app/keys
-      - ./api.py:/app/api.py
-      - ./requirements.txt:/app/requirements.txt
-    command: >
-      bash -c "pip install -r requirements.txt
-      && python3 api.py"
+      liquibase:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
 
+  generator:
+    build: 
+      dockerfile: generator/Dockerfile
+    networks:
+      - sm-network
+    depends_on:
+      liquibase:
+        condition: service_completed_successfully
 
 networks:
   sm-network:

@@ -6,7 +6,7 @@ databaseChangeLog:
     changes:
     - createTable:
         tableName: game
-        remarks: Table of all types sudoku-games
+        remarks: Table of all the types sudoku-games
         columns:
         - column:
             name:  id
@@ -31,11 +31,18 @@ databaseChangeLog:
               foreignKeyName: game_sudoku_fk
               references: sudoku(id)
         - column:
-            name:  status
-            type:  ENUM('IN_PROGRESS', 'WON', 'LOST', 'DRAW')
+            name: start_timestamp
+            type: TIMESTAMP
+        - column:
+            name: end_timestamp
+            type: TIMESTAMP
+        - column:
+            name: winner_id
+            type: INT
             constraints:
-              nullable:  false
-              defaultValueBoolean:  'IN_PROGRESS'
+              nullable:  true
+              foreignKeyName: game_winner_fk
+              references: user(id)
 
 
 
