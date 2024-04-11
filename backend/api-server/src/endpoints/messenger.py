@@ -21,7 +21,7 @@ async def check_access():
     user_id = decode_auth_token(token)
 
     if not user_id:
-        abort(Response('Invalid auth-token!', 400))
+        abort(Response('Invalid auth-token!', 401))
 
     channel = request.args.get('channel', ' .').split('.')
 
@@ -70,6 +70,19 @@ async def signup() -> Response:
     return jsonify({'auth-token': token})
 
 
+@messenger.post("/who-am-i")
+async def who_am_i() -> Response:
+    data = json.loads(request.data.decode('utf-8'))
+    token = data.get('auth-token')
+    
+    user_id = decode_auth_token(token)
+
+    if not user_id:
+        abort(Response('Invalid token!', 401))
+
+    return user_id
+
+
 @messenger.post('/signin')
 async def signin() -> Response:
     data = json.loads(request.data.decode('utf-8'))
@@ -86,7 +99,7 @@ async def signin() -> Response:
 
         user: User = (await sess.execute(select(User).where(User.username == username))).unique().scalar_one_or_none()
         if not user:
-            abort(Response('User with that username does not exist!', 400))
+            abort(Response('User with that username does not exist!', 404))
         
         if user.password_hash != password_hash:
             abort(Response('Wrong password!', 400))
@@ -104,7 +117,7 @@ async def add_contact(username: str) -> Response:
     initiator_id = decode_auth_token(token)
 
     if not initiator_id:
-        abort(Response('Invalid token!', 400))
+        abort(Response('Invalid token!', 401))
     
     async with async_session() as sess:
         sess: AsyncSession
@@ -113,7 +126,7 @@ async def add_contact(username: str) -> Response:
         contact_user: User = (await sess.execute(select(User).where(User.username == username))).unique().scalar_one_or_none()
 
         if not initiator_user or not contact_user:
-            abort(Response('Invalid username!', 400))
+            abort(Response('Invalid username!', 404))
     
         contact = UserContact(user_id=initiator_user.id, contact_user_id=contact_user.id)
         sess.add(contact)
@@ -131,7 +144,7 @@ async def join_chat(chat_id: int) -> Response:
     user_id = decode_auth_token(token)
 
     if not user_id:
-        abort(Response('Invalid auth-token!', 400))
+        abort(Response('Invalid auth-token!', 401))
     
     async with async_session() as sess:
         sess: AsyncSession
@@ -139,8 +152,6 @@ async def join_chat(chat_id: int) -> Response:
         chat: Chat = await sess.get(Chat, chat_id)
         user: User = await sess.get(User, user_id)
 
-        if not user:
-            abort(Response('Invalid username!', 400))
         if not chat:
             abort(Response('Chat not found!', 404))
         
@@ -153,7 +164,7 @@ async def join_chat(chat_id: int) -> Response:
             invitor = await sess.get(User, token_data[0])
 
             if token_data[1] != chat_id or invitor not in chat.participants:
-                abort(Response('Invalid invite-token!', 400))
+                abort(Response('Invalid invite-token!', 403))
             
         chat.participants.append(user)
 
@@ -171,7 +182,7 @@ async def get_invite_token(chat_id: int) -> Response:
     user_id = decode_auth_token(token)
 
     if not user_id:
-        abort(Response('Invalid auth-token!', 400))
+        abort(Response('Invalid auth-token!', 401))
     
     async with async_session() as sess:
         sess: AsyncSession
@@ -197,7 +208,7 @@ async def create_chat() -> Response:
     user_id = decode_auth_token(token)
 
     if not user_id:
-        abort(Response('Invalid auth-token!', 400))
+        abort(Response('Invalid auth-token!', 401))
 
     async with async_session() as sess:
         sess: AsyncSession
@@ -223,7 +234,7 @@ async def send_message(chat_id: int) -> Response:
     user_id = decode_auth_token(token)
 
     if not user_id:
-        abort(Response('Invalid auth-token!', 400))
+        abort(Response('Invalid auth-token!', 401))
 
     async with async_session() as sess:
         sess: AsyncSession
