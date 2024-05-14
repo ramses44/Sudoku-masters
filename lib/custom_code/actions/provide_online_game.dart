@@ -18,7 +18,7 @@ Future provideOnlineGame(GameStruct game, String authToken,
   try {
     SSEClient.subscribeToSSE(
         method: SSERequestType.GET,
-        url: 'http://sudokumasters.ddns.net:8080/listen?channel=game.' +
+        url: 'http://sudoku-masters.ddns.net:8080/listen?channel=game.' +
             game.id.toString(),
         header: {
           "Accept": "text/event-stream",

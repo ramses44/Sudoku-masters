@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'settings_page_model.dart';
 export 'settings_page_model.dart';
@@ -72,80 +73,34 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
         ),
         body: SafeArea(
           top: true,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
             children: [
-              Align(
-                alignment: const AlignmentDirectional(0.0, 0.0),
-                child: Text(
-                  FFLocalizations.of(context).getText(
-                    'bxs2m7dt' /* Тёмная тема */,
-                  ),
-                  style: FlutterFlowTheme.of(context).titleLarge.override(
-                        fontFamily: 'Outfit',
-                        fontSize: 24.0,
-                        letterSpacing: 0.0,
-                      ),
-                ),
-              ),
-              Switch.adaptive(
-                value: _model.switchValue1 ??= false,
-                onChanged: (newValue) async {
-                  setState(() => _model.switchValue1 = newValue);
-                  if (newValue) {
-                    setDarkModeSetting(context, ThemeMode.dark);
-                  } else {
-                    setDarkModeSetting(context, ThemeMode.light);
-                  }
-                },
-                activeColor: FlutterFlowTheme.of(context).primary,
-                activeTrackColor: FlutterFlowTheme.of(context).accent1,
-                inactiveTrackColor: FlutterFlowTheme.of(context).alternate,
-                inactiveThumbColor: FlutterFlowTheme.of(context).secondaryText,
-              ),
-              const Opacity(
-                opacity: 0.0,
-                child: Divider(
-                  height: 100.0,
-                ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(0.0, 0.0),
-                child: Text(
-                  FFLocalizations.of(context).getText(
-                    '4bv6ejva' /* Язык */,
-                  ),
-                  style: FlutterFlowTheme.of(context).titleLarge.override(
-                        fontFamily: 'Outfit',
-                        fontSize: 24.0,
-                        letterSpacing: 0.0,
-                      ),
-                ),
-              ),
-              Row(
+              Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    FFLocalizations.of(context).getText(
-                      'l2wunw1r' /* Русский */,
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: Text(
+                      FFLocalizations.of(context).getText(
+                        'bxs2m7dt' /* Тёмная тема */,
+                      ),
+                      style: FlutterFlowTheme.of(context).titleLarge.override(
+                            fontFamily: 'Outfit',
+                            fontSize: 24.0,
+                            letterSpacing: 0.0,
+                          ),
                     ),
-                    style: FlutterFlowTheme.of(context).bodyLarge.override(
-                          fontFamily: 'Readex Pro',
-                          letterSpacing: 0.0,
-                          fontWeight: FontWeight.w500,
-                        ),
                   ),
                   Switch.adaptive(
-                    value: _model.switchValue2 ??= false,
+                    value: _model.switchValue1 ??= false,
                     onChanged: (newValue) async {
-                      setState(() => _model.switchValue2 = newValue);
+                      setState(() => _model.switchValue1 = newValue);
                       if (newValue) {
-                        setAppLanguage(context, 'en');
+                        setDarkModeSetting(context, ThemeMode.dark);
                       } else {
-                        setAppLanguage(context, 'ru');
+                        setDarkModeSetting(context, ThemeMode.light);
                       }
                     },
                     activeColor: FlutterFlowTheme.of(context).primary,
@@ -154,17 +109,76 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                     inactiveThumbColor:
                         FlutterFlowTheme.of(context).secondaryText,
                   ),
-                  Text(
-                    FFLocalizations.of(context).getText(
-                      '2lt4tndz' /* English */,
+                  const Opacity(
+                    opacity: 0.0,
+                    child: Divider(
+                      height: 100.0,
                     ),
-                    style: FlutterFlowTheme.of(context).bodyLarge.override(
-                          fontFamily: 'Readex Pro',
-                          letterSpacing: 0.0,
-                          fontWeight: FontWeight.w500,
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: Text(
+                      FFLocalizations.of(context).getText(
+                        '4bv6ejva' /* Язык */,
+                      ),
+                      style: FlutterFlowTheme.of(context).titleLarge.override(
+                            fontFamily: 'Outfit',
+                            fontSize: 24.0,
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        FFLocalizations.of(context).getText(
+                          'l2wunw1r' /* Русский */,
                         ),
+                        style: FlutterFlowTheme.of(context).bodyLarge.override(
+                              fontFamily: 'Readex Pro',
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                      Switch.adaptive(
+                        value: _model.switchValue2 ??= false,
+                        onChanged: (newValue) async {
+                          setState(() => _model.switchValue2 = newValue);
+                          if (newValue) {
+                            setAppLanguage(context, 'en');
+                          } else {
+                            setAppLanguage(context, 'ru');
+                          }
+                        },
+                        activeColor: FlutterFlowTheme.of(context).primary,
+                        activeTrackColor: FlutterFlowTheme.of(context).accent1,
+                        inactiveTrackColor:
+                            FlutterFlowTheme.of(context).alternate,
+                        inactiveThumbColor:
+                            FlutterFlowTheme.of(context).secondaryText,
+                      ),
+                      Text(
+                        FFLocalizations.of(context).getText(
+                          '2lt4tndz' /* English */,
+                        ),
+                        style: FlutterFlowTheme.of(context).bodyLarge.override(
+                              fontFamily: 'Readex Pro',
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                    ],
                   ),
                 ],
+              ),
+              const Align(
+                alignment: AlignmentDirectional(0.0, 1.0),
+                child: custom_widgets.YandexAdWidget(
+                  width: double.infinity,
+                  height: 80.0,
+                ),
               ),
             ],
           ),

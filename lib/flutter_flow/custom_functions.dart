@@ -79,11 +79,11 @@ bool isSetRight(
 }
 
 double numberButtonFontSize(double windowHeight) {
-  return windowHeight / 30;
+  return windowHeight / 38;
 }
 
 double timerFieldHeight(double windowHeight) {
-  return windowHeight / 10;
+  return windowHeight / 16;
 }
 
 List<CellStruct> fieldFromStr(String sudokuStr) {

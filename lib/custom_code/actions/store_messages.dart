@@ -21,7 +21,7 @@ Future storeMessages(
   try {
     SSEClient.subscribeToSSE(
         method: SSERequestType.GET,
-        url: 'http://sudokumasters.ddns.net:8080/listen?channel=message.' +
+        url: 'http://sudoku-masters.ddns.net:8080/listen?channel=message.' +
             chatId.toString(),
         header: {
           "Accept": "text/event-stream",

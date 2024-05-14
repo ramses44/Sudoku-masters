@@ -625,138 +625,161 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           (_model.dropDownValue1 == null))
                                       ? null
                                       : () async {
-                                          _model.createGameRes =
-                                              await CreateGameCall.call(
-                                            gameType:
-                                                _model.dropDownValue1?.name,
-                                            difficulty:
-                                                _model.dropDownValue3?.name,
-                                            size: _model.dropDownValue4,
-                                            authToken: FFAppState().authToken,
-                                            playersList: (int? otherPlayerId,
-                                                    int userId) {
-                                              return otherPlayerId != null
-                                                  ? [userId, otherPlayerId]
-                                                  : [userId];
-                                            }(_model.dropDownValue2,
-                                                FFAppState().user.id),
-                                          );
-                                          if ((_model
-                                                  .createGameRes?.succeeded ??
-                                              true)) {
-                                            if (_model.dropDownValue1 ==
-                                                GameType.Classic) {
-                                              setState(() {
-                                                FFAppState()
-                                                    .addToLocalGames(GameStruct(
-                                                  id: CreateGameCall.id(
-                                                    (_model.createGameRes
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  ),
-                                                  type: _model.dropDownValue1,
-                                                  sudoku: SudokuStruct(
-                                                    id: CreateGameCall.sudokuId(
+                                          if (FFAppState().user.hasId() ==
+                                              true) {
+                                            _model.createGameRes =
+                                                await CreateGameCall.call(
+                                              gameType:
+                                                  _model.dropDownValue1?.name,
+                                              difficulty:
+                                                  _model.dropDownValue3?.name,
+                                              size: _model.dropDownValue4,
+                                              authToken: FFAppState().authToken,
+                                              playersList: (int? otherPlayerId,
+                                                      int userId) {
+                                                return otherPlayerId != null
+                                                    ? [userId, otherPlayerId]
+                                                    : [userId];
+                                              }(_model.dropDownValue2,
+                                                  FFAppState().user.id),
+                                            );
+                                            if ((_model
+                                                    .createGameRes?.succeeded ??
+                                                true)) {
+                                              if (_model.dropDownValue1 ==
+                                                  GameType.Classic) {
+                                                setState(() {
+                                                  FFAppState().addToLocalGames(
+                                                      GameStruct(
+                                                    id: CreateGameCall.id(
                                                       (_model.createGameRes
                                                               ?.jsonBody ??
                                                           ''),
                                                     ),
-                                                    difficulty:
-                                                        _model.dropDownValue3,
-                                                    size: _model.dropDownValue4,
-                                                    field:
-                                                        functions.fieldFromStr(
-                                                            CreateGameCall
-                                                                .sudokuData(
-                                                      (_model.createGameRes
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                    ).toString()),
-                                                  ),
-                                                  players:
-                                                      CreateGameCall.players(
-                                                    (_model.createGameRes
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  )
-                                                          ?.map((e) =>
-                                                              UserStruct
-                                                                  .maybeFromMap(
-                                                                      e))
-                                                          .withoutNulls
-                                                          .toList(),
-                                                ));
-                                              });
-
-                                              context.pushNamed(
-                                                'GamePage',
-                                                queryParameters: {
-                                                  'game': serializeParam(
-                                                    FFAppState()
-                                                        .localGames
-                                                        .last,
-                                                    ParamType.DataStruct,
-                                                  ),
-                                                  'globalIndex': serializeParam(
-                                                    FFAppState()
-                                                            .localGames
-                                                            .length -
-                                                        1,
-                                                    ParamType.int,
-                                                  ),
-                                                }.withoutNulls,
-                                              );
-                                            } else {
-                                              context.pushNamed(
-                                                'OnlineGamePage',
-                                                queryParameters: {
-                                                  'game': serializeParam(
-                                                    GameStruct(
-                                                      id: CreateGameCall.id(
+                                                    type: _model.dropDownValue1,
+                                                    sudoku: SudokuStruct(
+                                                      id: CreateGameCall
+                                                          .sudokuId(
                                                         (_model.createGameRes
                                                                 ?.jsonBody ??
                                                             ''),
                                                       ),
-                                                      type:
-                                                          _model.dropDownValue1,
-                                                      sudoku: SudokuStruct(
-                                                        id: CreateGameCall
-                                                            .sudokuId(
+                                                      difficulty:
+                                                          _model.dropDownValue3,
+                                                      size:
+                                                          _model.dropDownValue4,
+                                                      field: functions
+                                                          .fieldFromStr(
+                                                              CreateGameCall
+                                                                  .sudokuData(
+                                                        (_model.createGameRes
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                      ).toString()),
+                                                    ),
+                                                    players: CreateGameCall
+                                                            .players(
+                                                      (_model.createGameRes
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    )
+                                                        ?.map((e) => UserStruct
+                                                            .maybeFromMap(e))
+                                                        .withoutNulls
+                                                        .toList(),
+                                                  ));
+                                                });
+
+                                                context.pushNamed(
+                                                  'GamePage',
+                                                  queryParameters: {
+                                                    'game': serializeParam(
+                                                      FFAppState()
+                                                          .localGames
+                                                          .last,
+                                                      ParamType.DataStruct,
+                                                    ),
+                                                    'globalIndex':
+                                                        serializeParam(
+                                                      FFAppState()
+                                                              .localGames
+                                                              .length -
+                                                          1,
+                                                      ParamType.int,
+                                                    ),
+                                                  }.withoutNulls,
+                                                );
+                                              } else {
+                                                context.pushNamed(
+                                                  'OnlineGamePage',
+                                                  queryParameters: {
+                                                    'game': serializeParam(
+                                                      GameStruct(
+                                                        id: CreateGameCall.id(
                                                           (_model.createGameRes
                                                                   ?.jsonBody ??
                                                               ''),
                                                         ),
-                                                        difficulty: _model
-                                                            .dropDownValue3,
-                                                        size: _model
-                                                            .dropDownValue4,
-                                                        field: functions
-                                                            .fieldFromStr(
-                                                                CreateGameCall
-                                                                    .sudokuData(
+                                                        type: _model
+                                                            .dropDownValue1,
+                                                        sudoku: SudokuStruct(
+                                                          id: CreateGameCall
+                                                              .sudokuId(
+                                                            (_model.createGameRes
+                                                                    ?.jsonBody ??
+                                                                ''),
+                                                          ),
+                                                          difficulty: _model
+                                                              .dropDownValue3,
+                                                          size: _model
+                                                              .dropDownValue4,
+                                                          field: functions
+                                                              .fieldFromStr(
+                                                                  CreateGameCall
+                                                                      .sudokuData(
+                                                            (_model.createGameRes
+                                                                    ?.jsonBody ??
+                                                                ''),
+                                                          ).toString()),
+                                                        ),
+                                                        players: CreateGameCall
+                                                                .players(
                                                           (_model.createGameRes
                                                                   ?.jsonBody ??
                                                               ''),
-                                                        ).toString()),
+                                                        )
+                                                            ?.map((e) =>
+                                                                UserStruct
+                                                                    .maybeFromMap(
+                                                                        e))
+                                                            .withoutNulls
+                                                            .toList(),
                                                       ),
-                                                      players: CreateGameCall
-                                                              .players(
-                                                        (_model.createGameRes
-                                                                ?.jsonBody ??
-                                                            ''),
-                                                      )
-                                                          ?.map((e) =>
-                                                              UserStruct
-                                                                  .maybeFromMap(
-                                                                      e))
-                                                          .withoutNulls
-                                                          .toList(),
+                                                      ParamType.DataStruct,
                                                     ),
-                                                    ParamType.DataStruct,
-                                                  ),
-                                                }.withoutNulls,
-                                              );
+                                                  }.withoutNulls,
+                                                );
+                                              }
                                             }
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Авторизуйтесь, чтобы создать игру!',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                  ),
+                                                ),
+                                                duration: const Duration(
+                                                    milliseconds: 2000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .warning,
+                                              ),
+                                            );
                                           }
 
                                           setState(() {});
@@ -793,552 +816,654 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         ],
                       ),
                     ),
-                    FutureBuilder<ApiCallResponse>(
-                      future: (_model.apiRequestCompleter1 ??=
-                              Completer<ApiCallResponse>()
-                                ..complete(GetActiveGamesCall.call(
-                                  userId: FFAppState().user.id,
-                                )))
-                          .future,
-                      builder: (context, snapshot) {
-                        // Customize what your widget looks like when it's loading.
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: SizedBox(
-                              width: 50.0,
-                              height: 50.0,
-                              child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  FlutterFlowTheme.of(context).primary,
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                        final activeGamesGetActiveGamesResponse =
-                            snapshot.data!;
-                        return Builder(
-                          builder: (context) {
-                            final game = functions
-                                .gamesFromJson(
-                                    activeGamesGetActiveGamesResponse.bodyText,
-                                    FFAppState().user.id)
-                                .toList();
-                            return RefreshIndicator(
-                              onRefresh: () async {
-                                setState(
-                                    () => _model.apiRequestCompleter1 = null);
-                                await _model.waitForApiRequestCompleted1();
-                              },
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.vertical,
-                                itemCount: game.length,
-                                itemBuilder: (context, gameIndex) {
-                                  final gameItem = game[gameIndex];
-                                  return Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        10.0, 10.0, 10.0, 1.0),
-                                    child: InkWell(
-                                      splashColor: Colors.transparent,
-                                      focusColor: Colors.transparent,
-                                      hoverColor: Colors.transparent,
-                                      highlightColor: Colors.transparent,
-                                      onTap: () async {
-                                        if (gameItem.type == GameType.Classic) {
-                                          context.pushNamed(
-                                            'GamePage',
-                                            queryParameters: {
-                                              'game': serializeParam(
-                                                FFAppState().localGames[
-                                                    functions.getGameIndex(
-                                                        FFAppState()
-                                                            .localGames
-                                                            .toList(),
-                                                        gameItem.id)],
-                                                ParamType.DataStruct,
-                                              ),
-                                              'globalIndex': serializeParam(
-                                                functions.getGameIndex(
-                                                    FFAppState()
-                                                        .localGames
-                                                        .toList(),
-                                                    gameItem.id),
-                                                ParamType.int,
-                                              ),
-                                            }.withoutNulls,
-                                          );
-                                        } else {
-                                          if (!functions.isPlayerInGame(
-                                              gameItem, FFAppState().user)) {
-                                            _model.joinGameRes = await GameGroup
-                                                .joinGameCall
-                                                .call(
-                                              gameId: gameItem.id,
-                                              authToken: FFAppState().authToken,
-                                            );
-                                            if ((_model
-                                                    .joinGameRes?.succeeded ??
-                                                true)) {
-                                              _model.refreshGameRes =
-                                                  await GameGroup
-                                                      .getGameInfoCall
-                                                      .call(
-                                                gameId: gameItem.id,
-                                              );
-                                              if ((_model.refreshGameRes
-                                                      ?.succeeded ??
-                                                  true)) {
+                    Builder(
+                      builder: (context) {
+                        if (FFAppState().user.hasId()) {
+                          return FutureBuilder<ApiCallResponse>(
+                            future: (_model.apiRequestCompleter1 ??=
+                                    Completer<ApiCallResponse>()
+                                      ..complete(GetActiveGamesCall.call(
+                                        userId: FFAppState().user.id,
+                                      )))
+                                .future,
+                            builder: (context, snapshot) {
+                              // Customize what your widget looks like when it's loading.
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 50.0,
+                                    height: 50.0,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        FlutterFlowTheme.of(context).primary,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                              final activeGamesGetActiveGamesResponse =
+                                  snapshot.data!;
+                              return Builder(
+                                builder: (context) {
+                                  final game = functions
+                                      .gamesFromJson(
+                                          activeGamesGetActiveGamesResponse
+                                              .bodyText,
+                                          FFAppState().user.id)
+                                      .toList();
+                                  return RefreshIndicator(
+                                    key: const Key('RefreshIndicator_ara01h0w'),
+                                    onRefresh: () async {
+                                      setState(() =>
+                                          _model.apiRequestCompleter1 = null);
+                                      await _model
+                                          .waitForApiRequestCompleted1();
+                                    },
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: game.length,
+                                      itemBuilder: (context, gameIndex) {
+                                        final gameItem = game[gameIndex];
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  10.0, 10.0, 10.0, 1.0),
+                                          child: InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              if (gameItem.type ==
+                                                  GameType.Classic) {
                                                 context.pushNamed(
-                                                  'OnlineGamePage',
+                                                  'GamePage',
                                                   queryParameters: {
                                                     'game': serializeParam(
-                                                      functions
-                                                          .gamesFromJson(
-                                                              (String body) {
-                                                                return '[$body]';
-                                                              }((_model
-                                                                      .refreshGameRes
-                                                                      ?.bodyText ??
-                                                                  '')),
+                                                      FFAppState().localGames[
+                                                          functions.getGameIndex(
                                                               FFAppState()
-                                                                  .user
-                                                                  .id)
-                                                          .first,
+                                                                  .localGames
+                                                                  .toList(),
+                                                              gameItem.id)],
                                                       ParamType.DataStruct,
+                                                    ),
+                                                    'globalIndex':
+                                                        serializeParam(
+                                                      functions.getGameIndex(
+                                                          FFAppState()
+                                                              .localGames
+                                                              .toList(),
+                                                          gameItem.id),
+                                                      ParamType.int,
                                                     ),
                                                   }.withoutNulls,
                                                 );
-                                              }
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    'Игра уже началась',
-                                                    style: TextStyle(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                    ),
-                                                  ),
-                                                  duration: const Duration(
-                                                      milliseconds: 2000),
-                                                  backgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .error,
-                                                ),
-                                              );
-                                            }
-                                          } else {
-                                            context.pushNamed(
-                                              'OnlineGamePage',
-                                              queryParameters: {
-                                                'game': serializeParam(
-                                                  gameItem,
-                                                  ParamType.DataStruct,
-                                                ),
-                                              }.withoutNulls,
-                                            );
-                                          }
-                                        }
-
-                                        setState(() {});
-                                      },
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        elevation: 3.0,
-                                        child: Container(
-                                          width: double.infinity,
-                                          height: 100.0,
-                                          decoration: BoxDecoration(
-                                            color: functions.isPlayerInGame(
-                                                    gameItem, FFAppState().user)
-                                                ? FlutterFlowTheme.of(context)
-                                                    .secondaryBackground
-                                                : FlutterFlowTheme.of(context)
-                                                    .accent4,
-                                          ),
-                                          child: Stack(
-                                            children: [
-                                              Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Align(
-                                                    alignment:
-                                                        const AlignmentDirectional(
-                                                            0.0, 0.0),
-                                                    child: Text(
-                                                      valueOrDefault<String>(
-                                                        (int size, String dif,
-                                                                String type) {
-                                                          return '$size✕$size | $dif | $type';
-                                                        }(
-                                                            gameItem
-                                                                .sudoku.size,
-                                                            gameItem
-                                                                .sudoku
-                                                                .difficulty!
-                                                                .name,
-                                                            gameItem
-                                                                .type!.name),
-                                                        '---',
-                                                      ),
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .titleLarge
-                                                          .override(
-                                                            fontFamily:
-                                                                'Outfit',
-                                                            letterSpacing: 0.0,
+                                              } else {
+                                                if (!functions.isPlayerInGame(
+                                                    gameItem,
+                                                    FFAppState().user)) {
+                                                  _model.joinGameRes =
+                                                      await GameGroup
+                                                          .joinGameCall
+                                                          .call(
+                                                    gameId: gameItem.id,
+                                                    authToken:
+                                                        FFAppState().authToken,
+                                                  );
+                                                  if ((_model.joinGameRes
+                                                          ?.succeeded ??
+                                                      true)) {
+                                                    _model.refreshGameRes =
+                                                        await GameGroup
+                                                            .getGameInfoCall
+                                                            .call(
+                                                      gameId: gameItem.id,
+                                                    );
+                                                    if ((_model.refreshGameRes
+                                                            ?.succeeded ??
+                                                        true)) {
+                                                      context.pushNamed(
+                                                        'OnlineGamePage',
+                                                        queryParameters: {
+                                                          'game':
+                                                              serializeParam(
+                                                            functions
+                                                                .gamesFromJson(
+                                                                    (String
+                                                                        body) {
+                                                                      return '[$body]';
+                                                                    }((_model
+                                                                            .refreshGameRes
+                                                                            ?.bodyText ??
+                                                                        '')),
+                                                                    FFAppState()
+                                                                        .user
+                                                                        .id)
+                                                                .first,
+                                                            ParamType
+                                                                .DataStruct,
                                                           ),
-                                                    ),
-                                                  ),
-                                                  Builder(
-                                                    builder: (context) {
-                                                      if ((gameItem.type !=
-                                                              GameType
-                                                                  .Classic) &&
-                                                          (gameItem.players
-                                                                  .length ==
-                                                              1)) {
-                                                        return Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              functions
-                                                                  .joinPlayersAlias(
-                                                                      gameItem),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
-                                                            Text(
-                                                              FFLocalizations.of(
-                                                                      context)
-                                                                  .getText(
-                                                                'fo8pbbof' /* ищет игроков... */,
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
-                                                          ].divide(const SizedBox(
-                                                              width: 5.0)),
-                                                        );
-                                                      } else {
-                                                        return Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              FFLocalizations.of(
-                                                                      context)
-                                                                  .getText(
-                                                                'hbfu13p9' /* Игроки: */,
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
-                                                            Text(
-                                                              functions
-                                                                  .joinPlayersAlias(
-                                                                      gameItem),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Readex Pro',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                  ),
-                                                            ),
-                                                          ].divide(const SizedBox(
-                                                              width: 5.0)),
-                                                        );
-                                                      }
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                              if ((gameItem.type !=
-                                                      GameType.Classic) &&
-                                                  (gameItem.timer == 0))
-                                                Align(
-                                                  alignment:
-                                                      const AlignmentDirectional(
-                                                          -1.0, 0.0),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(10.0),
-                                                    child: Icon(
-                                                      Icons.hourglass_top,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryText,
-                                                      size: 45.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                              if ((gameItem.type !=
-                                                      GameType.Classic) &&
-                                                  (gameItem.timer == 0) &&
-                                                  functions.isPlayerInGame(
-                                                      gameItem,
-                                                      FFAppState().user))
-                                                Align(
-                                                  alignment:
-                                                      const AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(10.0),
-                                                    child: InkWell(
-                                                      splashColor:
-                                                          Colors.transparent,
-                                                      focusColor:
-                                                          Colors.transparent,
-                                                      hoverColor:
-                                                          Colors.transparent,
-                                                      highlightColor:
-                                                          Colors.transparent,
-                                                      onTap: () async {
-                                                        _model.apiResult7so =
-                                                            await GameGroup
-                                                                .cancelGameCall
-                                                                .call(
-                                                          gameId: gameItem.id,
-                                                          authToken:
-                                                              FFAppState()
-                                                                  .authToken,
-                                                        );
-                                                        setState(() => _model
-                                                                .apiRequestCompleter2 =
-                                                            null);
-
-                                                        setState(() {});
-                                                      },
-                                                      child: Icon(
-                                                        Icons.close,
-                                                        color:
+                                                        }.withoutNulls,
+                                                      );
+                                                    }
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(
+                                                          'Игра уже началась',
+                                                          style: TextStyle(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryText,
+                                                          ),
+                                                        ),
+                                                        duration: const Duration(
+                                                            milliseconds: 2000),
+                                                        backgroundColor:
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .error,
-                                                        size: 45.0,
                                                       ),
-                                                    ),
-                                                  ),
+                                                    );
+                                                  }
+                                                } else {
+                                                  context.pushNamed(
+                                                    'OnlineGamePage',
+                                                    queryParameters: {
+                                                      'game': serializeParam(
+                                                        gameItem,
+                                                        ParamType.DataStruct,
+                                                      ),
+                                                    }.withoutNulls,
+                                                  );
+                                                }
+                                              }
+
+                                              setState(() {});
+                                            },
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              elevation: 3.0,
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: 100.0,
+                                                decoration: BoxDecoration(
+                                                  color: functions
+                                                          .isPlayerInGame(
+                                                              gameItem,
+                                                              FFAppState().user)
+                                                      ? FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondaryBackground
+                                                      : FlutterFlowTheme.of(
+                                                              context)
+                                                          .accent4,
                                                 ),
-                                            ],
+                                                child: Stack(
+                                                  children: [
+                                                    Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Align(
+                                                          alignment:
+                                                              const AlignmentDirectional(
+                                                                  0.0, 0.0),
+                                                          child: Text(
+                                                            valueOrDefault<
+                                                                String>(
+                                                              (int size,
+                                                                      String dif,
+                                                                      String type) {
+                                                                return '$size✕$size | $dif | $type';
+                                                              }(
+                                                                  gameItem
+                                                                      .sudoku
+                                                                      .size,
+                                                                  gameItem
+                                                                      .sudoku
+                                                                      .difficulty!
+                                                                      .name,
+                                                                  gameItem.type!
+                                                                      .name),
+                                                              '---',
+                                                            ),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .titleLarge
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                        Builder(
+                                                          builder: (context) {
+                                                            if ((gameItem
+                                                                        .type !=
+                                                                    GameType
+                                                                        .Classic) &&
+                                                                (gameItem
+                                                                        .players
+                                                                        .length ==
+                                                                    1)) {
+                                                              return Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                    functions
+                                                                        .joinPlayersAlias(
+                                                                            gameItem),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
+                                                                  ),
+                                                                  Text(
+                                                                    FFLocalizations.of(
+                                                                            context)
+                                                                        .getText(
+                                                                      'fo8pbbof' /* ищет игроков... */,
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
+                                                                  ),
+                                                                ].divide(const SizedBox(
+                                                                    width:
+                                                                        5.0)),
+                                                              );
+                                                            } else {
+                                                              return Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                    FFLocalizations.of(
+                                                                            context)
+                                                                        .getText(
+                                                                      'hbfu13p9' /* Игроки: */,
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
+                                                                  ),
+                                                                  Text(
+                                                                    functions
+                                                                        .joinPlayersAlias(
+                                                                            gameItem),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Readex Pro',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
+                                                                  ),
+                                                                ].divide(const SizedBox(
+                                                                    width:
+                                                                        5.0)),
+                                                              );
+                                                            }
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    if ((gameItem.type !=
+                                                            GameType.Classic) &&
+                                                        (gameItem.timer == 0))
+                                                      Align(
+                                                        alignment:
+                                                            const AlignmentDirectional(
+                                                                -1.0, 0.0),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets.all(
+                                                                  10.0),
+                                                          child: Icon(
+                                                            Icons.hourglass_top,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .secondaryText,
+                                                            size: 45.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    if ((gameItem.type !=
+                                                            GameType.Classic) &&
+                                                        (gameItem.timer == 0) &&
+                                                        functions
+                                                            .isPlayerInGame(
+                                                                gameItem,
+                                                                FFAppState()
+                                                                    .user))
+                                                      Align(
+                                                        alignment:
+                                                            const AlignmentDirectional(
+                                                                1.0, 0.0),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets.all(
+                                                                  10.0),
+                                                          child: InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              _model.apiResult7so =
+                                                                  await GameGroup
+                                                                      .cancelGameCall
+                                                                      .call(
+                                                                gameId:
+                                                                    gameItem.id,
+                                                                authToken:
+                                                                    FFAppState()
+                                                                        .authToken,
+                                                              );
+                                                              setState(() =>
+                                                                  _model.apiRequestCompleter2 =
+                                                                      null);
+
+                                                              setState(() {});
+                                                            },
+                                                            child: Icon(
+                                                              Icons.close,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .error,
+                                                              size: 45.0,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
+                                        );
+                                      },
                                     ),
                                   );
                                 },
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    FutureBuilder<ApiCallResponse>(
-                      future: (_model.apiRequestCompleter2 ??=
-                              Completer<ApiCallResponse>()
-                                ..complete(GetFinishedGamesCall.call(
-                                  userId: FFAppState().user.id,
-                                )))
-                          .future,
-                      builder: (context, snapshot) {
-                        // Customize what your widget looks like when it's loading.
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: SizedBox(
-                              width: 50.0,
-                              height: 50.0,
-                              child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  FlutterFlowTheme.of(context).primary,
+                              );
+                            },
+                          );
+                        } else {
+                          return Align(
+                            alignment: const AlignmentDirectional(0.0, 0.0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  30.0, 0.0, 30.0, 0.0),
+                              child: Text(
+                                FFLocalizations.of(context).getText(
+                                  'bmck1jqk' /* Доступно только авторизованным... */,
                                 ),
+                                textAlign: TextAlign.center,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 22.0,
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
                             ),
                           );
                         }
-                        final arciveGamesGetFinishedGamesResponse =
-                            snapshot.data!;
-                        return Builder(
-                          builder: (context) {
-                            final game = functions
-                                .gamesFromJson(
-                                    arciveGamesGetFinishedGamesResponse
-                                        .bodyText,
-                                    FFAppState().user.id)
-                                .toList();
-                            return RefreshIndicator(
-                              onRefresh: () async {
-                                setState(
-                                    () => _model.apiRequestCompleter2 = null);
-                                await _model.waitForApiRequestCompleted2();
-                              },
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.vertical,
-                                itemCount: game.length,
-                                itemBuilder: (context, gameIndex) {
-                                  final gameItem = game[gameIndex];
-                                  return Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        10.0, 10.0, 10.0, 1.0),
-                                    child: InkWell(
-                                      splashColor: Colors.transparent,
-                                      focusColor: Colors.transparent,
-                                      hoverColor: Colors.transparent,
-                                      highlightColor: Colors.transparent,
-                                      onTap: () async {
-                                        context.pushNamed(
-                                          'FinishedGamePage',
-                                          queryParameters: {
-                                            'game': serializeParam(
-                                              gameItem,
-                                              ParamType.DataStruct,
-                                            ),
-                                          }.withoutNulls,
-                                        );
-                                      },
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        elevation: 3.0,
-                                        child: Container(
-                                          width: double.infinity,
-                                          height: 100.0,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
-                                          ),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Align(
-                                                alignment: const AlignmentDirectional(
-                                                    0.0, 0.0),
-                                                child: Text(
-                                                  valueOrDefault<String>(
-                                                    (int size, String dif,
-                                                            String type) {
-                                                      return '$size✕$size | $dif | $type';
-                                                    }(
-                                                        gameItem.sudoku.size,
-                                                        gameItem.sudoku
-                                                            .difficulty!.name,
-                                                        gameItem.type!.name),
-                                                    '---',
+                      },
+                    ),
+                    Builder(
+                      builder: (context) {
+                        if (FFAppState().user.hasId()) {
+                          return FutureBuilder<ApiCallResponse>(
+                            future: (_model.apiRequestCompleter2 ??=
+                                    Completer<ApiCallResponse>()
+                                      ..complete(GetFinishedGamesCall.call(
+                                        userId: FFAppState().user.id,
+                                      )))
+                                .future,
+                            builder: (context, snapshot) {
+                              // Customize what your widget looks like when it's loading.
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 50.0,
+                                    height: 50.0,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        FlutterFlowTheme.of(context).primary,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                              final arciveGamesGetFinishedGamesResponse =
+                                  snapshot.data!;
+                              return Builder(
+                                builder: (context) {
+                                  final game = functions
+                                      .gamesFromJson(
+                                          arciveGamesGetFinishedGamesResponse
+                                              .bodyText,
+                                          FFAppState().user.id)
+                                      .toList();
+                                  return RefreshIndicator(
+                                    key: const Key('RefreshIndicator_ppixkbal'),
+                                    onRefresh: () async {
+                                      setState(() =>
+                                          _model.apiRequestCompleter2 = null);
+                                      await _model
+                                          .waitForApiRequestCompleted2();
+                                    },
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: game.length,
+                                      itemBuilder: (context, gameIndex) {
+                                        final gameItem = game[gameIndex];
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  10.0, 10.0, 10.0, 1.0),
+                                          child: InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              context.pushNamed(
+                                                'FinishedGamePage',
+                                                queryParameters: {
+                                                  'game': serializeParam(
+                                                    gameItem,
+                                                    ParamType.DataStruct,
                                                   ),
-                                                  style: FlutterFlowTheme.of(
+                                                }.withoutNulls,
+                                              );
+                                            },
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              elevation: 3.0,
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: 100.0,
+                                                decoration: BoxDecoration(
+                                                  color: FlutterFlowTheme.of(
                                                           context)
-                                                      .titleLarge
-                                                      .override(
-                                                        fontFamily: 'Outfit',
-                                                        letterSpacing: 0.0,
+                                                      .secondaryBackground,
+                                                ),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          const AlignmentDirectional(
+                                                              0.0, 0.0),
+                                                      child: Text(
+                                                        valueOrDefault<String>(
+                                                          (int size, String dif,
+                                                                  String type) {
+                                                            return '$size✕$size | $dif | $type';
+                                                          }(
+                                                              gameItem
+                                                                  .sudoku.size,
+                                                              gameItem
+                                                                  .sudoku
+                                                                  .difficulty!
+                                                                  .name,
+                                                              gameItem
+                                                                  .type!.name),
+                                                          '---',
+                                                        ),
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .getText(
+                                                            'dzxs0kdf' /* Игроки: */,
+                                                          ),
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                        Text(
+                                                          functions
+                                                              .joinPlayersAlias(
+                                                                  gameItem),
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                      ].divide(
+                                                          const SizedBox(width: 5.0)),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    FFLocalizations.of(context)
-                                                        .getText(
-                                                      'dzxs0kdf' /* Игроки: */,
-                                                    ),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                  ),
-                                                  Text(
-                                                    functions.joinPlayersAlias(
-                                                        gameItem),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                  ),
-                                                ].divide(const SizedBox(width: 5.0)),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      ),
+                                        );
+                                      },
                                     ),
                                   );
                                 },
+                              );
+                            },
+                          );
+                        } else {
+                          return Align(
+                            alignment: const AlignmentDirectional(0.0, 0.0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  30.0, 0.0, 30.0, 0.0),
+                              child: Text(
+                                FFLocalizations.of(context).getText(
+                                  'sskf0oq6' /* Доступно только авторизованным... */,
+                                ),
+                                textAlign: TextAlign.center,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      fontSize: 22.0,
+                                      letterSpacing: 0.0,
+                                    ),
                               ),
-                            );
-                          },
-                        );
+                            ),
+                          );
+                        }
                       },
                     ),
                   ],

@@ -10,7 +10,7 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 /// Start user Group Code
 
 class UserGroup {
-  static String baseUrl = 'http://sudokumasters.ddns.net:8080/user';
+  static String baseUrl = 'http://sudoku-masters.ddns.net:8080/user';
   static Map<String, String> headers = {};
   static SignInCall signInCall = SignInCall();
   static SignUpCall signUpCall = SignUpCall();
@@ -297,7 +297,7 @@ class AddContactCall {
 /// Start messenger Group Code
 
 class MessengerGroup {
-  static String baseUrl = 'http://sudokumasters.ddns.net:8080/messenger';
+  static String baseUrl = 'http://sudoku-masters.ddns.net:8080/messenger';
   static Map<String, String> headers = {};
   static SendMessageCall sendMessageCall = SendMessageCall();
   static ShareSudokuCall shareSudokuCall = ShareSudokuCall();
@@ -424,7 +424,7 @@ class ShareContactCall {
 /// Start game Group Code
 
 class GameGroup {
-  static String baseUrl = 'http://sudokumasters.ddns.net:8080/game';
+  static String baseUrl = 'http://sudoku-masters.ddns.net:8080/game';
   static Map<String, String> headers = {};
   static JoinGameCall joinGameCall = JoinGameCall();
   static CancelGameCall cancelGameCall = CancelGameCall();
@@ -754,7 +754,7 @@ class StoreMessagesCall {
     return ApiManager.instance.makeApiCall(
       callName: 'storeMessages',
       apiUrl:
-          'http://sudokumasters.ddns.net:8080/messenger/store-messages/$chatId',
+          'http://sudoku-masters.ddns.net:8080/messenger/store-messages/$chatId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -776,7 +776,7 @@ class GetChatsCall {
     return ApiManager.instance.makeApiCall(
       callName: 'getChats',
       apiUrl:
-          'http://sudokumasters.ddns.net:8080/messenger/get-chats/$userId',
+          'http://sudoku-masters.ddns.net:8080/messenger/get-chats/$userId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -797,7 +797,7 @@ class SearchForChatsCall {
     return ApiManager.instance.makeApiCall(
       callName: 'searchForChats',
       apiUrl:
-          'http://sudokumasters.ddns.net:8080/messenger/search-for-chats/$query',
+          'http://sudoku-masters.ddns.net:8080/messenger/search-for-chats/$query',
       callType: ApiCallType.GET,
       headers: {
         'Authorization': 'Bearer $authToken',
@@ -825,7 +825,7 @@ class ReadMessageCall {
     return ApiManager.instance.makeApiCall(
       callName: 'readMessage',
       apiUrl:
-          'http://sudokumasters.ddns.net:8080/messenger/read-message/$chatId/$msgId',
+          'http://sudoku-masters.ddns.net:8080/messenger/read-message/$chatId/$msgId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -853,7 +853,7 @@ class AddToChatCall {
     return ApiManager.instance.makeApiCall(
       callName: 'addToChat',
       apiUrl:
-          'http://sudokumasters.ddns.net:8080/messenger/add-to-chat/$chatId/$userId',
+          'http://sudoku-masters.ddns.net:8080/messenger/add-to-chat/$chatId/$userId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -886,7 +886,7 @@ class CreateChatCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'createChat',
-      apiUrl: 'http://sudokumasters.ddns.net:8080/messenger/create-chat',
+      apiUrl: 'http://sudoku-masters.ddns.net:8080/messenger/create-chat',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -921,7 +921,7 @@ class CreateGameCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'createGame',
-      apiUrl: 'http://sudokumasters.ddns.net:8080/game/create-game',
+      apiUrl: 'http://sudoku-masters.ddns.net:8080/game/create-game',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -977,7 +977,7 @@ class GetActiveGamesCall {
     return ApiManager.instance.makeApiCall(
       callName: 'getActiveGames',
       apiUrl:
-          'http://sudokumasters.ddns.net:8080/game/get-active-games/$userId',
+          'http://sudoku-masters.ddns.net:8080/game/get-active-games/$userId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -1002,7 +1002,7 @@ class GetFinishedGamesCall {
     return ApiManager.instance.makeApiCall(
       callName: 'getFinishedGames',
       apiUrl:
-          'http://sudokumasters.ddns.net:8080/game/get-finished-games/$userId',
+          'http://sudoku-masters.ddns.net:8080/game/get-finished-games/$userId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},

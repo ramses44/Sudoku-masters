@@ -199,6 +199,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'ru': 'Игроки:',
       'en': 'Players:',
     },
+    'bmck1jqk': {
+      'ru': 'Доступно только авторизованным пользователям',
+      'en': 'Available only to authorized users',
+    },
     '2iod2mvg': {
       'ru': 'Архив',
       'en': 'Archive',
@@ -206,6 +210,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
     'dzxs0kdf': {
       'ru': 'Игроки:',
       'en': 'Players:',
+    },
+    'sskf0oq6': {
+      'ru': 'Доступно только авторизованным пользователям',
+      'en': 'Available only to authorized users',
     },
     'y468cb3x': {
       'ru': 'Игры',
@@ -547,19 +555,19 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'ru': 'Ошибок: ',
       'en': 'Mistakes: ',
     },
-    'cifju3wz': {
+    'actjhlr7': {
       'ru': 'Ластик',
       'en': '',
     },
-    '6l951xnz': {
+    'j8fn09vx': {
       'ru': 'Ластик',
       'en': 'Eraser',
     },
-    'f0a7oq1s': {
+    '0araynjm': {
       'ru': 'Карандаш',
       'en': 'Pencil',
     },
-    '7yvq8r54': {
+    '86h9wir8': {
       'ru': 'Карандаш',
       'en': '',
     },
