@@ -1,0 +1,49 @@
+databaseChangeLog:
+- changeSet:
+    id:  9
+    author:  ramses44
+    remarks:  Add indexes
+    changes:
+    - createIndex:
+        indexName:  players_user_index
+        tableName:  user_game
+        associatedWith: foreignKey
+        columns:  
+        - column:
+            name: user_id
+    - createIndex:
+        indexName:  players_game_index
+        tableName:  user_game
+        associatedWith: foreignKey
+        columns:  
+        - column:
+            name: game_id
+    - createIndex:
+        indexName:  message_chat_index
+        tableName:  message
+        associatedWith: foreignKey
+        columns:  
+        - column:
+            name: chat_id
+    - createIndex:
+        indexName:  message_sender_index
+        tableName:  message
+        columns:  
+        - column:
+            name: chat_id
+        - column:
+            name: sender_id
+    - createIndex:
+        indexName:  message_sender_type_index
+        tableName:  message
+        columns:  
+        - column:
+            name: sender_id 
+        - column:
+            name: type
+    - createIndex:
+        indexName:  user_contact_index
+        tableName:  user_contact
+        columns:  
+        - column:
+            name: user_id
