@@ -12,7 +12,7 @@ static const std::vector<std::pair<unsigned, std::string_view>>
                          {9, "medium"}, {9, "hard"},   {16, "easy"}};
 
 std::string sudoku_encode(Sudoku sudoku) {
-  return sudoku.ToString(0) + "\n\n" + sudoku.ToString(1);
+  return sudoku.ToString(0) + "\n" + sudoku.ToString(1);
 }
 
 void gen_thread_func(unsigned size, std::string_view dif_str,

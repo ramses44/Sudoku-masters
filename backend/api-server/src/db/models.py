@@ -3,6 +3,7 @@ from sqlalchemy import (
     Column,
     Integer,
     String,
+    Float,
     Boolean,
     Enum,
     Text,
@@ -22,12 +23,11 @@ Table(
     Column("chat_id", Integer, ForeignKey("chat.id"), primary_key=True),
 )
 
-Table(
-    "user_game",
-    Base.metadata,
-    Column("user_id", Integer, ForeignKey("user.id"), primary_key=True),
-    Column("game_id", Integer, ForeignKey("game.id"), primary_key=True),
-)
+class UserGame(Base):
+    __tablename__ = "user_game"
+    user_id = Column(Integer, ForeignKey("user.id"), primary_key=True)
+    game_id = Column(Integer, ForeignKey("game.id"), primary_key=True)
+    mistakes = Column(Integer, nullable=False, default=0)
 
 
 class UserContact(Base):
@@ -44,7 +44,7 @@ class User(Base):
     username = Column(String(32), nullable=False, unique=True)
     password_hash = Column(LargeBinary(32), nullable=False)
     alias = Column(String(64), nullable=False)
-    rating = Column(Integer, nullable=False, default=0)
+    rating = Column(Float, nullable=False, default=0)
 
     games = relationship(
         "Game", secondary="user_game", back_populates="players", lazy="joined"
@@ -60,6 +60,14 @@ class User(Base):
     chats = relationship(
         "Chat", secondary="user_chat", back_populates="participants", lazy="selectin"
     )
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "username": self.username,
+            "alias": self.alias,
+            "rating": int(self.rating),
+        }
 
 
 class Sudoku(Base):
@@ -86,8 +94,9 @@ class Game(Base):
     type = Column(String(16), nullable=False, default="Classic")
     sudoku_id = Column(Integer, ForeignKey("sudoku.id"), nullable=False)
     start_timestamp = Column(DateTime, nullable=True)
-    end_timestamp = Column(DateTime, nullable=True)
+    is_finished = Column(Boolean, nullable=False, default=False)
     winner_id = Column(Integer, ForeignKey("user.id"), nullable=True)
+    time = Column(Integer, default=0)
 
     players = relationship(
         "User", secondary="user_game", back_populates="games", lazy="joined"
@@ -98,11 +107,16 @@ class Game(Base):
         return {
             "id": self.id,
             "type": self.type,
-            "sudoku": self.sudoku_id,
-            "start": self.start_timestamp.strftime("%Y-%m-%d %H:%M:%S") if self.start_timestamp else None,
-            "end": self.end_timestamp.strftime("%Y-%m-%d %H:%M:%S") if self.end_timestamp else None,
+            "sudoku": self.sudoku.to_dict(),
+            "start": (
+                self.start_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                if self.start_timestamp
+                else None
+            ),
+            "is_finished": self.is_finished,
             "winner": self.winner_id,
-            "players": [p.id for p in self.players],
+            "players": list(map(User.to_dict, self.players)),
+            "time": self.time if self.is_finished or not self.start_timestamp else (datetime.now() - self.start_timestamp).seconds
         }
 
 
@@ -117,6 +131,14 @@ class Chat(Base):
     participants = relationship(
         "User", secondary="user_chat", back_populates="chats", lazy="selectin"
     )
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "title": self.title,
+            "is_private": self.is_private,
+            "participants": list(map(User.to_dict, self.participants)),
+        }
 
 
 class Message(Base):
@@ -135,3 +157,13 @@ class Message(Base):
 
     chat = relationship("Chat", foreign_keys=[chat_id], lazy="joined")
     sender = relationship("User", foreign_keys=[sender_id], lazy="joined")
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "chat": self.chat_id,
+            "sender": self.sender.to_dict(),
+            "type": self.type,
+            "data": self.data,
+            "sending_datetime": self.sending_datetime.strftime("%Y-%m-%d %H:%M"),
+        }

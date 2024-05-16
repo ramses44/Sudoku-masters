@@ -31,7 +31,7 @@ databaseChangeLog:
             type:  VARCHAR(64)
         - column:
             name:  rating
-            type:  INT
+            type:  FLOAT
             constraints:
               nullable:  false
-              defaultValueNumeric: 0
+              defaultValue: 0
