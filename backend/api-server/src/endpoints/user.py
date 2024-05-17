@@ -269,9 +269,9 @@ async def get_user_stat(user_id: int):
         return jsonify({
             type: {
                 'count': len(games),
-                'time': sum(map(lambda x: x.time, games)) / len(games) if games else None,
-                'winrate': sum(map(lambda x: x.winner_id == user_id, games)) / len(games) if games else None,
-                'mistakes': sum(map(lambda x: x.mistakes, (await sess.execute(select(UserGame).where(UserGame.user_id == user_id, UserGame.game_id.in_([g.id for g in games])))).scalars().unique().all())) / len(games) if games else None
+                'time': round(sum(map(lambda x: x.time, games)) / len(games), 2) if games else None,
+                'winrate': round(sum(map(lambda x: x.winner_id == user_id, games)) / len(games), 2) if games else None,
+                'mistakes': round(sum(map(lambda x: x.mistakes, (await sess.execute(select(UserGame).where(UserGame.user_id == user_id, UserGame.game_id.in_([g.id for g in games])))).scalars().unique().all())) / len(games), 2) if games else None
             }
             for type, games in [('All', user_.games), ('Classic', classic_games), ('Duel', duel_games), ('Cooperative', coop_games)]
         })

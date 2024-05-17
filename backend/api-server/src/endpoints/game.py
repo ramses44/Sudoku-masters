@@ -78,7 +78,7 @@ def finish_game(game: Game, time: int = None) -> None:
             "time": game.time,
         },
         type="finish",
-        channel="game." + str(game.id),
+        channel=f"game.{game.id}",
     )
 
     if not game.winner_id:
@@ -86,7 +86,11 @@ def finish_game(game: Game, time: int = None) -> None:
 
     for player in game.players:
         player.rating += (
-            rating_for_win if player.id == game.winner_id else rating_for_lose
+            rating_for_win
+            if player.id == game.winner_id
+            or game.type == "Cooperative"
+            and game.winner_id != -1
+            else rating_for_lose
         )(game.type, game.sudoku.size, game.sudoku.difficulty)
 
 
@@ -106,7 +110,7 @@ async def get_mistakes(game_id: int) -> dict:
 
 @game.get("/get-sudoku/<int:size>/<string:dif>")
 async def get_sudoku(size: int, dif: str):
-    dif = dif.lower()
+    dif = dif.capitalize()
     if (size, dif) not in SUDOKU_TYPES:
         abort(400)
 
@@ -141,16 +145,16 @@ async def get_sudoku_by_id(id: int):
 async def create_game():
     data = json.loads(request.data.decode())
 
-    game_type = data.get("game-type")
+    game_type = data.get("game-type", "").capitalize()
     size = data.get("sudoku-size")
-    dif = data.get("sudoku-difficulty")
+    dif = data.get("sudoku-difficulty", "").capitalize()
     players = data.get("players", [])
     token = data.get("auth-token")
     user_id = decode_auth_token(token)
 
     if not user_id:
         abort(Response("Invalid auth-token!", 401))
-
+    
     if game_type not in GAME_TYPES or (size, dif) not in SUDOKU_TYPES:
         abort(400)
 
@@ -238,6 +242,7 @@ async def cancel_game(game_id: int):
 
         awaiting_games.pop(game_id, None)
         searching_players_games.pop(game_id, None)
+        sse.publish({}, type="cancel", channel=f"game.{game_id}")
 
     return Response(status=200)
 
@@ -421,6 +426,8 @@ async def lose(game_id: int):
                 else game.players[0].id
             )
             game.winner_id = other_player_id
+        else:
+            game.winner_id = -1
 
         if mistakes:
             user_game.mistakes = mistakes
