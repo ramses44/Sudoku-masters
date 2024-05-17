@@ -1,5 +1,6 @@
 import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/enums/enums.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'dart:async';
@@ -15,20 +16,24 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   int get tabBarCurrentIndex =>
       tabBarController != null ? tabBarController!.index : 0;
 
-  // State field(s) for DropDown widget.
-  GameType? dropDownValue1;
-  FormFieldController<GameType>? dropDownValueController1;
-  // State field(s) for DropDown widget.
-  int? dropDownValue2;
-  FormFieldController<int>? dropDownValueController2;
-  // State field(s) for DropDown widget.
-  Difficulty? dropDownValue3;
-  FormFieldController<Difficulty>? dropDownValueController3;
-  // State field(s) for DropDown widget.
-  int? dropDownValue4;
-  FormFieldController<int>? dropDownValueController4;
+  // State field(s) for type widget.
+  GameType? typeValue;
+  FormFieldController<GameType>? typeValueController;
+  // State field(s) for player widget.
+  int? playerValue;
+  FormFieldController<int>? playerValueController;
+  // State field(s) for difficulty widget.
+  Difficulty? difficultyValue;
+  FormFieldController<Difficulty>? difficultyValueController;
+  // State field(s) for size widget.
+  int? sizeValue;
+  FormFieldController<int>? sizeValueController;
   // Stores action output result for [Backend Call - API (createGame)] action in Button widget.
   ApiCallResponse? createGameRes;
+  // Stores action output result for [Backend Call - API (getSudoku)] action in Button widget.
+  ApiCallResponse? getSudokuRes;
+  // Stores action output result for [Custom Action - generateSudoku] action in Button widget.
+  SudokuStruct? generatedSudoku;
   Completer<ApiCallResponse>? apiRequestCompleter1;
   // Stores action output result for [Backend Call - API (joinGame)] action in Container widget.
   ApiCallResponse? joinGameRes;

@@ -46,6 +46,9 @@ class FFAppState extends ChangeNotifier {
     _safeInit(() {
       _authToken = prefs.getString('ff_authToken') ?? _authToken;
     });
+    _safeInit(() {
+      _localGameIdCtr = prefs.getInt('ff_localGameIdCtr') ?? _localGameIdCtr;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -113,6 +116,19 @@ class FFAppState extends ChangeNotifier {
   set authToken(String value) {
     _authToken = value;
     prefs.setString('ff_authToken', value);
+  }
+
+  int _rebuildAllPages = 42;
+  int get rebuildAllPages => _rebuildAllPages;
+  set rebuildAllPages(int value) {
+    _rebuildAllPages = value;
+  }
+
+  int _localGameIdCtr = 1;
+  int get localGameIdCtr => _localGameIdCtr;
+  set localGameIdCtr(int value) {
+    _localGameIdCtr = value;
+    prefs.setInt('ff_localGameIdCtr', value);
   }
 }
 

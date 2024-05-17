@@ -18,7 +18,7 @@ Future provideOnlineGame(GameStruct game, String authToken,
   try {
     SSEClient.subscribeToSSE(
         method: SSERequestType.GET,
-        url: 'http://sudoku-masters.ddns.net:8080/listen?channel=game.' +
+        url: 'http://sudoku-masters1.ddns.net/listen?channel=game.' +
             game.id.toString(),
         header: {
           "Accept": "text/event-stream",
@@ -31,9 +31,15 @@ Future provideOnlineGame(GameStruct game, String authToken,
           case "start":
             game.startTimestamp = DateTime.parse(data['start-timestamp'] + 'Z');
             break;
+          case "cancel":
+            game.id = 0;
+            newEventsFlag.isSet = true;
+            SSEClient.unsubscribeFromSSE();
+            break;
           case "finish":
             if (data.containsKey('winner')) game.winnerId = data['winner'];
 
+            game.isFinished = true;
             game.timer = data['time'];
             newEventsFlag.isSet = true;
             SSEClient.unsubscribeFromSSE();

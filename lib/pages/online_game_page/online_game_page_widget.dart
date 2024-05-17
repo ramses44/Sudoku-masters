@@ -58,6 +58,7 @@ class _OnlineGamePageWidgetState extends State<OnlineGamePageWidget> {
           );
         }(),
       );
+      await Future.delayed(const Duration(milliseconds: 100));
       unawaited(
         () async {
           await GameGroup.joinGameCall.call(
@@ -88,6 +89,13 @@ class _OnlineGamePageWidgetState extends State<OnlineGamePageWidget> {
                     (e) => e..isSet = false,
                   );
                 });
+                if (widget.game?.id == 0) {
+                  FFAppState().update(() {
+                    FFAppState().rebuildAllPages =
+                        FFAppState().rebuildAllPages + 1;
+                  });
+                  context.safePop();
+                }
                 if (widget.game!.mistakes >= FFAppConstants.maxMistakes) {
                   unawaited(
                     () async {
@@ -98,7 +106,7 @@ class _OnlineGamePageWidgetState extends State<OnlineGamePageWidget> {
                     }(),
                   );
                 }
-                if (widget.game?.winnerId != 0) {
+                if (widget.game!.isFinished) {
                   if (Navigator.of(context).canPop()) {
                     context.pop();
                   }
@@ -111,6 +119,11 @@ class _OnlineGamePageWidgetState extends State<OnlineGamePageWidget> {
                       ),
                     }.withoutNulls,
                   );
+
+                  FFAppState().update(() {
+                    FFAppState().rebuildAllPages =
+                        FFAppState().rebuildAllPages + 1;
+                  });
                 }
               }
             },
@@ -369,6 +382,9 @@ class _OnlineGamePageWidgetState extends State<OnlineGamePageWidget> {
               size: 24.0,
             ),
             onPressed: () async {
+              FFAppState().update(() {
+                FFAppState().rebuildAllPages = FFAppState().rebuildAllPages + 1;
+              });
               context.safePop();
             },
           ),
@@ -1242,6 +1258,13 @@ class _OnlineGamePageWidgetState extends State<OnlineGamePageWidget> {
                                                             );
                                                           }
 
+                                                          setState(() {
+                                                            _model
+                                                                .updateNewEventsFlagStruct(
+                                                              (e) => e
+                                                                ..isSet = true,
+                                                            );
+                                                          });
                                                           setState(() {
                                                             _model.selectedNumber =
                                                                 buttonNumberItem;

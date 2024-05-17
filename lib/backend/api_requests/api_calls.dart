@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import '/flutter_flow/flutter_flow_util.dart';
 import 'api_manager.dart';
 
@@ -10,7 +12,11 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 /// Start user Group Code
 
 class UserGroup {
-  static String baseUrl = 'http://sudoku-masters.ddns.net:8080/user';
+  static String getBaseUrl({
+    int? userId,
+    String? authToken = '',
+  }) =>
+      'http://sudoku-masters1.ddns.net/user';
   static Map<String, String> headers = {};
   static SignInCall signInCall = SignInCall();
   static SignUpCall signUpCall = SignUpCall();
@@ -29,6 +35,11 @@ class SignInCall {
     int? userId,
     String? authToken = '',
   }) async {
+    final baseUrl = UserGroup.getBaseUrl(
+      userId: userId,
+      authToken: authToken,
+    );
+
     final ffApiRequestBody = '''
 {
   "username": "$username",
@@ -36,7 +47,7 @@ class SignInCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'signIn',
-      apiUrl: '${UserGroup.baseUrl}/signin',
+      apiUrl: '$baseUrl/signin',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -64,6 +75,11 @@ class SignUpCall {
     int? userId,
     String? authToken = '',
   }) async {
+    final baseUrl = UserGroup.getBaseUrl(
+      userId: userId,
+      authToken: authToken,
+    );
+
     final ffApiRequestBody = '''
 {
   "username": "$username",
@@ -72,7 +88,7 @@ class SignUpCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'signUp',
-      apiUrl: '${UserGroup.baseUrl}/signup',
+      apiUrl: '$baseUrl/signup',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -98,9 +114,14 @@ class SearchUserCall {
     int? userId,
     String? authToken = '',
   }) async {
+    final baseUrl = UserGroup.getBaseUrl(
+      userId: userId,
+      authToken: authToken,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'searchUser',
-      apiUrl: '${UserGroup.baseUrl}/search-for-users/$query',
+      apiUrl: '$baseUrl/search-for-users/$query',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -118,13 +139,18 @@ class DeleteContactCall {
     int? userId,
     String? authToken = '',
   }) async {
+    final baseUrl = UserGroup.getBaseUrl(
+      userId: userId,
+      authToken: authToken,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'deleteContact',
-      apiUrl: '${UserGroup.baseUrl}/delete-contact/$userId',
+      apiUrl: '$baseUrl/delete-contact/$userId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -144,9 +170,14 @@ class GetUserStatCall {
     int? userId,
     String? authToken = '',
   }) async {
+    final baseUrl = UserGroup.getBaseUrl(
+      userId: userId,
+      authToken: authToken,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'getUserStat',
-      apiUrl: '${UserGroup.baseUrl}/get-user-stat/$userId',
+      apiUrl: '$baseUrl/get-user-stat/$userId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -229,9 +260,14 @@ class GetUserInfoCall {
     int? userId,
     String? authToken = '',
   }) async {
+    final baseUrl = UserGroup.getBaseUrl(
+      userId: userId,
+      authToken: authToken,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'getUserInfo',
-      apiUrl: '${UserGroup.baseUrl}/get-user-info/$userId',
+      apiUrl: '$baseUrl/get-user-info/$userId',
       callType: ApiCallType.GET,
       headers: {
         'Authorization': 'Bearer $authToken',
@@ -251,9 +287,14 @@ class GetContactsCall {
     int? userId,
     String? authToken = '',
   }) async {
+    final baseUrl = UserGroup.getBaseUrl(
+      userId: userId,
+      authToken: authToken,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'getContacts',
-      apiUrl: '${UserGroup.baseUrl}/get-contacts/$userId',
+      apiUrl: '$baseUrl/get-contacts/$userId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -271,13 +312,18 @@ class AddContactCall {
     int? userId,
     String? authToken = '',
   }) async {
+    final baseUrl = UserGroup.getBaseUrl(
+      userId: userId,
+      authToken: authToken,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'addContact',
-      apiUrl: '${UserGroup.baseUrl}/add-contact/$userId',
+      apiUrl: '$baseUrl/add-contact/$userId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -297,7 +343,11 @@ class AddContactCall {
 /// Start messenger Group Code
 
 class MessengerGroup {
-  static String baseUrl = 'http://sudoku-masters.ddns.net:8080/messenger';
+  static String getBaseUrl({
+    int? chatId,
+    String? authToken = '',
+  }) =>
+      'http://sudoku-masters1.ddns.net/messenger';
   static Map<String, String> headers = {};
   static SendMessageCall sendMessageCall = SendMessageCall();
   static ShareSudokuCall shareSudokuCall = ShareSudokuCall();
@@ -312,6 +362,11 @@ class SendMessageCall {
     int? chatId,
     String? authToken = '',
   }) async {
+    final baseUrl = MessengerGroup.getBaseUrl(
+      chatId: chatId,
+      authToken: authToken,
+    );
+
     final ffApiRequestBody = '''
 {
   "msg-type": "$msgType",
@@ -320,7 +375,7 @@ class SendMessageCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'sendMessage',
-      apiUrl: '${MessengerGroup.baseUrl}/send-message/$chatId',
+      apiUrl: '$baseUrl/send-message/$chatId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -341,6 +396,11 @@ class ShareSudokuCall {
     int? chatId,
     String? authToken = '',
   }) async {
+    final baseUrl = MessengerGroup.getBaseUrl(
+      chatId: chatId,
+      authToken: authToken,
+    );
+
     final ffApiRequestBody = '''
 {
   "msg-type": "SUDOKU",
@@ -349,7 +409,7 @@ class ShareSudokuCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'shareSudoku',
-      apiUrl: '${MessengerGroup.baseUrl}/send-message/$chatId',
+      apiUrl: '$baseUrl/send-message/$chatId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -369,13 +429,18 @@ class JoinChatCall {
     int? chatId,
     String? authToken = '',
   }) async {
+    final baseUrl = MessengerGroup.getBaseUrl(
+      chatId: chatId,
+      authToken: authToken,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'joinChat',
-      apiUrl: '${MessengerGroup.baseUrl}/join-chat/$chatId',
+      apiUrl: '$baseUrl/join-chat/$chatId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -396,6 +461,11 @@ class ShareContactCall {
     int? chatId,
     String? authToken = '',
   }) async {
+    final baseUrl = MessengerGroup.getBaseUrl(
+      chatId: chatId,
+      authToken: authToken,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken",
@@ -404,7 +474,7 @@ class ShareContactCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'shareContact',
-      apiUrl: '${MessengerGroup.baseUrl}/send-message/$chatId',
+      apiUrl: '$baseUrl/send-message/$chatId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -424,7 +494,11 @@ class ShareContactCall {
 /// Start game Group Code
 
 class GameGroup {
-  static String baseUrl = 'http://sudoku-masters.ddns.net:8080/game';
+  static String getBaseUrl({
+    String? authToken = '',
+    int? gameId,
+  }) =>
+      'http://sudoku-masters1.ddns.net/game';
   static Map<String, String> headers = {};
   static JoinGameCall joinGameCall = JoinGameCall();
   static CancelGameCall cancelGameCall = CancelGameCall();
@@ -435,6 +509,7 @@ class GameGroup {
   static GetGameStateCall getGameStateCall = GetGameStateCall();
   static GameFromSudokuCall gameFromSudokuCall = GameFromSudokuCall();
   static GetGameInfoCall getGameInfoCall = GetGameInfoCall();
+  static GetSudokuCall getSudokuCall = GetSudokuCall();
 }
 
 class JoinGameCall {
@@ -442,13 +517,18 @@ class JoinGameCall {
     String? authToken = '',
     int? gameId,
   }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'joinGame',
-      apiUrl: '${GameGroup.baseUrl}/join-game/$gameId',
+      apiUrl: '$baseUrl/join-game/$gameId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -468,13 +548,18 @@ class CancelGameCall {
     String? authToken = '',
     int? gameId,
   }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'cancelGame',
-      apiUrl: '${GameGroup.baseUrl}/cancel-game/$gameId',
+      apiUrl: '$baseUrl/cancel-game/$gameId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -494,13 +579,18 @@ class MistakeCall {
     String? authToken = '',
     int? gameId,
   }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'mistake',
-      apiUrl: '${GameGroup.baseUrl}/mistake/$gameId',
+      apiUrl: '$baseUrl/mistake/$gameId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -522,13 +612,18 @@ class SolveCellCall {
     String? authToken = '',
     int? gameId,
   }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'solveCell',
-      apiUrl: '${GameGroup.baseUrl}/solve-cell/$gameId/$x/$y',
+      apiUrl: '$baseUrl/solve-cell/$gameId/$x/$y',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -550,6 +645,11 @@ class LoseCall {
     String? authToken = '',
     int? gameId,
   }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken",
@@ -558,7 +658,7 @@ class LoseCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'lose',
-      apiUrl: '${GameGroup.baseUrl}/lose/$gameId',
+      apiUrl: '$baseUrl/lose/$gameId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -580,6 +680,11 @@ class WinCall {
     String? authToken = '',
     int? gameId,
   }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken",
@@ -588,7 +693,7 @@ class WinCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'win',
-      apiUrl: '${GameGroup.baseUrl}/win/$gameId',
+      apiUrl: '$baseUrl/win/$gameId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -608,9 +713,14 @@ class GetGameStateCall {
     String? authToken = '',
     int? gameId,
   }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'getGameState',
-      apiUrl: '${GameGroup.baseUrl}/get-game-state/$gameId',
+      apiUrl: '$baseUrl/get-game-state/$gameId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -629,13 +739,18 @@ class GameFromSudokuCall {
     String? authToken = '',
     int? gameId,
   }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
     final ffApiRequestBody = '''
 {
   "auth-token": "$authToken"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'gameFromSudoku',
-      apiUrl: '${GameGroup.baseUrl}/game-from-sudoku/$sudokuId',
+      apiUrl: '$baseUrl/game-from-sudoku/$sudokuId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -688,9 +803,14 @@ class GetGameInfoCall {
     String? authToken = '',
     int? gameId,
   }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'getGameInfo',
-      apiUrl: '${GameGroup.baseUrl}/get-game-info/$gameId',
+      apiUrl: '$baseUrl/get-game-info/$gameId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -737,6 +857,50 @@ class GetGameInfoCall {
       ));
 }
 
+class GetSudokuCall {
+  Future<ApiCallResponse> call({
+    int? size,
+    String? difficulty = '',
+    String? authToken = '',
+    int? gameId,
+  }) async {
+    final baseUrl = GameGroup.getBaseUrl(
+      authToken: authToken,
+      gameId: gameId,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'getSudoku',
+      apiUrl: '$baseUrl/get-sudoku/$size/$difficulty',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  String? data(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.data''',
+      ));
+  String? difficulty(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.difficulty''',
+      ));
+  int? id(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.id''',
+      ));
+  int? size(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.size''',
+      ));
+}
+
 /// End game Group Code
 
 class StoreMessagesCall {
@@ -754,7 +918,7 @@ class StoreMessagesCall {
     return ApiManager.instance.makeApiCall(
       callName: 'storeMessages',
       apiUrl:
-          'http://sudoku-masters.ddns.net:8080/messenger/store-messages/$chatId',
+          'http://sudoku-masters1.ddns.net/messenger/store-messages/$chatId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -775,8 +939,7 @@ class GetChatsCall {
   }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'getChats',
-      apiUrl:
-          'http://sudoku-masters.ddns.net:8080/messenger/get-chats/$userId',
+      apiUrl: 'http://sudoku-masters1.ddns.net/messenger/get-chats/$userId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -797,7 +960,7 @@ class SearchForChatsCall {
     return ApiManager.instance.makeApiCall(
       callName: 'searchForChats',
       apiUrl:
-          'http://sudoku-masters.ddns.net:8080/messenger/search-for-chats/$query',
+          'http://sudoku-masters1.ddns.net/messenger/search-for-chats/$query',
       callType: ApiCallType.GET,
       headers: {
         'Authorization': 'Bearer $authToken',
@@ -825,7 +988,7 @@ class ReadMessageCall {
     return ApiManager.instance.makeApiCall(
       callName: 'readMessage',
       apiUrl:
-          'http://sudoku-masters.ddns.net:8080/messenger/read-message/$chatId/$msgId',
+          'http://sudoku-masters1.ddns.net/messenger/read-message/$chatId/$msgId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -853,7 +1016,7 @@ class AddToChatCall {
     return ApiManager.instance.makeApiCall(
       callName: 'addToChat',
       apiUrl:
-          'http://sudoku-masters.ddns.net:8080/messenger/add-to-chat/$chatId/$userId',
+          'http://sudoku-masters1.ddns.net/messenger/add-to-chat/$chatId/$userId',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -886,7 +1049,7 @@ class CreateChatCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'createChat',
-      apiUrl: 'http://sudoku-masters.ddns.net:8080/messenger/create-chat',
+      apiUrl: 'http://sudoku-masters1.ddns.net/messenger/create-chat',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -921,7 +1084,7 @@ class CreateGameCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'createGame',
-      apiUrl: 'http://sudoku-masters.ddns.net:8080/game/create-game',
+      apiUrl: 'http://sudoku-masters1.ddns.net/game/create-game',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -976,8 +1139,7 @@ class GetActiveGamesCall {
   }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'getActiveGames',
-      apiUrl:
-          'http://sudoku-masters.ddns.net:8080/game/get-active-games/$userId',
+      apiUrl: 'http://sudoku-masters1.ddns.net/game/get-active-games/$userId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -1002,7 +1164,7 @@ class GetFinishedGamesCall {
     return ApiManager.instance.makeApiCall(
       callName: 'getFinishedGames',
       apiUrl:
-          'http://sudoku-masters.ddns.net:8080/game/get-finished-games/$userId',
+          'http://sudoku-masters1.ddns.net/game/get-finished-games/$userId',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -1041,6 +1203,9 @@ String _serializeList(List? list) {
   try {
     return json.encode(list);
   } catch (_) {
+    if (kDebugMode) {
+      print("List serialization failed. Returning empty list.");
+    }
     return '[]';
   }
 }
@@ -1050,6 +1215,9 @@ String _serializeJson(dynamic jsonVar, [bool isList = false]) {
   try {
     return json.encode(jsonVar);
   } catch (_) {
+    if (kDebugMode) {
+      print("Json serialization failed. Returning empty json.");
+    }
     return isList ? '[]' : '{}';
   }
 }

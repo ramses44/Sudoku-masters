@@ -165,15 +165,15 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
     },
     'fb0j87q4': {
       'ru': '4 ✕ 4',
-      'en': 'Single',
+      'en': '4 ✕ 4',
     },
     'inc3vfa2': {
       'ru': '9 ✕ 9',
-      'en': '',
+      'en': '9 ✕ 9',
     },
     'opldd6fi': {
       'ru': '16 ✕ 16',
-      'en': '',
+      'en': '16 ✕ 16',
     },
     '8nakyftj': {
       'ru': 'Размер',
@@ -199,9 +199,9 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'ru': 'Игроки:',
       'en': 'Players:',
     },
-    'bmck1jqk': {
-      'ru': 'Доступно только авторизованным пользователям',
-      'en': 'Available only to authorized users',
+    'kklm20t3': {
+      'ru': 'Локальная игра',
+      'en': 'Local game',
     },
     '2iod2mvg': {
       'ru': 'Архив',
@@ -211,9 +211,9 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'ru': 'Игроки:',
       'en': 'Players:',
     },
-    'sskf0oq6': {
-      'ru': 'Доступно только авторизованным пользователям',
-      'en': 'Available only to authorized users',
+    '95e3z0p4': {
+      'ru': 'Локальная игра',
+      'en': 'Local game',
     },
     'y468cb3x': {
       'ru': 'Игры',

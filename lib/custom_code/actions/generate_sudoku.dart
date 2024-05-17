@@ -637,12 +637,10 @@ CellStruct cellStructFromCell(Cell cell) {
       notes: []);
 }
 
-Future<SudokuStruct> generateSudoku(
-  int size,
-  Difficulty difficulty,
-) async {
+Future<SudokuStruct> generateSudoku(int size, Difficulty difficulty) async {
   var sudoku = SudokuBuilder(size).build(difficulty);
   return SudokuStruct(
+      id: -1,
       size: size,
       difficulty: difficulty,
       field: List.generate(

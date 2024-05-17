@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -357,8 +358,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: FlutterFlowDropDown<GameType>(
-                                controller: _model.dropDownValueController1 ??=
-                                    FormFieldController<GameType>(null),
+                                controller: _model.typeValueController ??=
+                                    FormFieldController<GameType>(
+                                  _model.typeValue ??= FFAppState().user.hasId()
+                                      ? null
+                                      : GameType.Classic,
+                                ),
                                 options: List<GameType>.from(GameType.values),
                                 optionLabels: [
                                   FFLocalizations.of(context).getText(
@@ -372,7 +377,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   )
                                 ],
                                 onChanged: (val) =>
-                                    setState(() => _model.dropDownValue1 = val),
+                                    setState(() => _model.typeValue = val),
                                 width: 300.0,
                                 height: 56.0,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -407,8 +412,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               ),
                             ),
                           ),
-                          if ((_model.dropDownValue1 == GameType.Cooperative) ||
-                              (_model.dropDownValue1 == GameType.Duel))
+                          if (FFAppState().user.hasId() &&
+                              ((_model.typeValue == GameType.Cooperative) ||
+                                  (_model.typeValue == GameType.Duel)))
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: FutureBuilder<ApiCallResponse>(
@@ -432,16 +438,15 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ),
                                     );
                                   }
-                                  final dropDownGetContactsResponse =
+                                  final playerGetContactsResponse =
                                       snapshot.data!;
                                   return FlutterFlowDropDown<int>(
-                                    controller:
-                                        _model.dropDownValueController2 ??=
-                                            FormFieldController<int>(
-                                      _model.dropDownValue2 ??= null,
+                                    controller: _model.playerValueController ??=
+                                        FormFieldController<int>(
+                                      _model.playerValue ??= null,
                                     ),
                                     options: List<int>.from(
-                                        (dropDownGetContactsResponse.jsonBody
+                                        (playerGetContactsResponse.jsonBody
                                                     .toList()
                                                     .map<UserStruct?>(
                                                         UserStruct.maybeFromMap)
@@ -450,7 +455,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             .withoutNulls
                                             .map((e) => e.id)
                                             .toList()),
-                                    optionLabels: (dropDownGetContactsResponse
+                                    optionLabels: (playerGetContactsResponse
                                             .jsonBody
                                             .toList()
                                             .map<UserStruct?>(
@@ -460,7 +465,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         .map((e) => e.username)
                                         .toList(),
                                     onChanged: (val) => setState(
-                                        () => _model.dropDownValue2 = val),
+                                        () => _model.playerValue = val),
                                     width: 300.0,
                                     height: 56.0,
                                     textStyle: FlutterFlowTheme.of(context)
@@ -504,9 +509,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: FlutterFlowDropDown<Difficulty>(
-                                controller: _model.dropDownValueController3 ??=
+                                controller: _model.difficultyValueController ??=
                                     FormFieldController<Difficulty>(
-                                  _model.dropDownValue3 ??= null,
+                                  _model.difficultyValue ??= null,
                                 ),
                                 options:
                                     List<Difficulty>.from(Difficulty.values),
@@ -521,8 +526,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     'edimj1j1' /* Сложная */,
                                   )
                                 ],
-                                onChanged: (val) =>
-                                    setState(() => _model.dropDownValue3 = val),
+                                onChanged: (val) => setState(
+                                    () => _model.difficultyValue = val),
                                 width: 300.0,
                                 height: 56.0,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -561,7 +566,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: FlutterFlowDropDown<int>(
-                                controller: _model.dropDownValueController4 ??=
+                                controller: _model.sizeValueController ??=
                                     FormFieldController<int>(null),
                                 options: List<int>.from([4, 9, 16]),
                                 optionLabels: [
@@ -576,7 +581,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   )
                                 ],
                                 onChanged: (val) =>
-                                    setState(() => _model.dropDownValue4 = val),
+                                    setState(() => _model.sizeValue = val),
                                 width: 300.0,
                                 height: 56.0,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -615,80 +620,259 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             child: Align(
                               alignment: const AlignmentDirectional(0.0, 0.0),
                               child: Padding(
-                                padding: const EdgeInsets.all(45.0),
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    45.0, 20.0, 45.0, 0.0),
                                 child: FFButtonWidget(
                                   onPressed: (valueOrDefault<bool>(
-                                            _model.dropDownValue3 == null,
+                                            _model.difficultyValue == null,
                                             false,
                                           ) ||
-                                          (_model.dropDownValue4 == null) ||
-                                          (_model.dropDownValue1 == null))
+                                          (_model.sizeValue == null) ||
+                                          (_model.typeValue == null))
                                       ? null
                                       : () async {
-                                          if (FFAppState().user.hasId() ==
-                                              true) {
-                                            _model.createGameRes =
-                                                await CreateGameCall.call(
-                                              gameType:
-                                                  _model.dropDownValue1?.name,
-                                              difficulty:
-                                                  _model.dropDownValue3?.name,
-                                              size: _model.dropDownValue4,
-                                              authToken: FFAppState().authToken,
-                                              playersList: (int? otherPlayerId,
-                                                      int userId) {
-                                                return otherPlayerId != null
-                                                    ? [userId, otherPlayerId]
-                                                    : [userId];
-                                              }(_model.dropDownValue2,
-                                                  FFAppState().user.id),
+                                          if ((_model.sizeValue == 16) &&
+                                              (_model.difficultyValue !=
+                                                  Difficulty.Easy)) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Судоку 16х16 могут быть только лёгкой сложности!',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                  ),
+                                                ),
+                                                duration: const Duration(
+                                                    milliseconds: 2000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .warning,
+                                              ),
                                             );
-                                            if ((_model
-                                                    .createGameRes?.succeeded ??
-                                                true)) {
-                                              if (_model.dropDownValue1 ==
-                                                  GameType.Classic) {
-                                                setState(() {
-                                                  FFAppState().addToLocalGames(
-                                                      GameStruct(
-                                                    id: CreateGameCall.id(
-                                                      (_model.createGameRes
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                    ),
-                                                    type: _model.dropDownValue1,
-                                                    sudoku: SudokuStruct(
-                                                      id: CreateGameCall
-                                                          .sudokuId(
+                                          } else {
+                                            if (FFAppState().user.hasId()) {
+                                              _model.createGameRes =
+                                                  await CreateGameCall.call(
+                                                gameType:
+                                                    _model.typeValue?.name,
+                                                difficulty: _model
+                                                    .difficultyValue?.name,
+                                                size: _model.sizeValue,
+                                                authToken:
+                                                    FFAppState().authToken,
+                                                playersList:
+                                                    (int? otherPlayerId,
+                                                            int userId) {
+                                                  return otherPlayerId != null
+                                                      ? [userId, otherPlayerId]
+                                                      : [userId];
+                                                }(_model.playerValue,
+                                                        FFAppState().user.id),
+                                              );
+                                              if ((_model.createGameRes
+                                                      ?.succeeded ??
+                                                  true)) {
+                                                if (_model.typeValue ==
+                                                    GameType.Classic) {
+                                                  setState(() {
+                                                    FFAppState()
+                                                        .addToLocalGames(
+                                                            GameStruct(
+                                                      id: CreateGameCall.id(
                                                         (_model.createGameRes
                                                                 ?.jsonBody ??
                                                             ''),
                                                       ),
-                                                      difficulty:
-                                                          _model.dropDownValue3,
-                                                      size:
-                                                          _model.dropDownValue4,
-                                                      field: functions
-                                                          .fieldFromStr(
-                                                              CreateGameCall
-                                                                  .sudokuData(
+                                                      type: _model.typeValue,
+                                                      sudoku: SudokuStruct(
+                                                        id: CreateGameCall
+                                                            .sudokuId(
+                                                          (_model.createGameRes
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                        ),
+                                                        difficulty: _model
+                                                            .difficultyValue,
+                                                        size: _model.sizeValue,
+                                                        field: functions
+                                                            .fieldFromStr(
+                                                                CreateGameCall
+                                                                    .sudokuData(
+                                                          (_model.createGameRes
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                        ).toString()),
+                                                      ),
+                                                      players: CreateGameCall
+                                                              .players(
                                                         (_model.createGameRes
                                                                 ?.jsonBody ??
                                                             ''),
-                                                      ).toString()),
-                                                    ),
-                                                    players: CreateGameCall
-                                                            .players(
-                                                      (_model.createGameRes
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                    )
-                                                        ?.map((e) => UserStruct
-                                                            .maybeFromMap(e))
-                                                        .withoutNulls
-                                                        .toList(),
-                                                  ));
-                                                });
+                                                      )
+                                                          ?.map((e) =>
+                                                              UserStruct
+                                                                  .maybeFromMap(
+                                                                      e))
+                                                          .withoutNulls
+                                                          .toList(),
+                                                    ));
+                                                  });
+
+                                                  context.pushNamed(
+                                                    'GamePage',
+                                                    queryParameters: {
+                                                      'game': serializeParam(
+                                                        FFAppState()
+                                                            .localGames
+                                                            .last,
+                                                        ParamType.DataStruct,
+                                                      ),
+                                                      'globalIndex':
+                                                          serializeParam(
+                                                        FFAppState()
+                                                                .localGames
+                                                                .length -
+                                                            1,
+                                                        ParamType.int,
+                                                      ),
+                                                    }.withoutNulls,
+                                                  );
+                                                } else {
+                                                  context.pushNamed(
+                                                    'OnlineGamePage',
+                                                    queryParameters: {
+                                                      'game': serializeParam(
+                                                        GameStruct(
+                                                          id: CreateGameCall.id(
+                                                            (_model.createGameRes
+                                                                    ?.jsonBody ??
+                                                                ''),
+                                                          ),
+                                                          type:
+                                                              _model.typeValue,
+                                                          sudoku: SudokuStruct(
+                                                            id: CreateGameCall
+                                                                .sudokuId(
+                                                              (_model.createGameRes
+                                                                      ?.jsonBody ??
+                                                                  ''),
+                                                            ),
+                                                            difficulty: _model
+                                                                .difficultyValue,
+                                                            size: _model
+                                                                .sizeValue,
+                                                            field: functions
+                                                                .fieldFromStr(
+                                                                    CreateGameCall
+                                                                        .sudokuData(
+                                                              (_model.createGameRes
+                                                                      ?.jsonBody ??
+                                                                  ''),
+                                                            ).toString()),
+                                                          ),
+                                                          players: CreateGameCall
+                                                                  .players(
+                                                            (_model.createGameRes
+                                                                    ?.jsonBody ??
+                                                                ''),
+                                                          )
+                                                              ?.map((e) =>
+                                                                  UserStruct
+                                                                      .maybeFromMap(
+                                                                          e))
+                                                              .withoutNulls
+                                                              .toList(),
+                                                        ),
+                                                        ParamType.DataStruct,
+                                                      ),
+                                                    }.withoutNulls,
+                                                  );
+                                                }
+                                              }
+                                            } else {
+                                              if (_model.typeValue ==
+                                                  GameType.Classic) {
+                                                _model.getSudokuRes =
+                                                    await GameGroup
+                                                        .getSudokuCall
+                                                        .call(
+                                                  size: _model.sizeValue,
+                                                  difficulty: _model
+                                                      .difficultyValue?.name,
+                                                );
+                                                if ((_model.getSudokuRes
+                                                        ?.succeeded ??
+                                                    true)) {
+                                                  setState(() {
+                                                    FFAppState()
+                                                        .addToLocalGames(
+                                                            GameStruct(
+                                                      id: FFAppState()
+                                                          .localGameIdCtr,
+                                                      type: GameType.Classic,
+                                                      sudoku: SudokuStruct(
+                                                        id: GameGroup
+                                                            .getSudokuCall
+                                                            .id(
+                                                          (_model.getSudokuRes
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                        ),
+                                                        difficulty: functions
+                                                            .difficultyFromStr(
+                                                                GameGroup
+                                                                    .getSudokuCall
+                                                                    .difficulty(
+                                                          (_model.getSudokuRes
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                        )!),
+                                                        size: GameGroup
+                                                            .getSudokuCall
+                                                            .size(
+                                                          (_model.getSudokuRes
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                        ),
+                                                        field: functions
+                                                            .fieldFromStr(
+                                                                GameGroup
+                                                                    .getSudokuCall
+                                                                    .data(
+                                                          (_model.getSudokuRes
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                        )!),
+                                                      ),
+                                                    ));
+                                                  });
+                                                } else {
+                                                  _model.generatedSudoku =
+                                                      await actions
+                                                          .generateSudoku(
+                                                    _model.sizeValue!,
+                                                    _model.difficultyValue!,
+                                                  );
+                                                  setState(() {
+                                                    FFAppState()
+                                                        .addToLocalGames(
+                                                            GameStruct(
+                                                      id: FFAppState()
+                                                          .localGameIdCtr,
+                                                      type: GameType.Classic,
+                                                      sudoku: _model
+                                                          .generatedSudoku,
+                                                    ));
+                                                  });
+                                                }
+
+                                                FFAppState().localGameIdCtr =
+                                                    FFAppState()
+                                                            .localGameIdCtr +
+                                                        1;
 
                                                 context.pushNamed(
                                                   'GamePage',
@@ -710,76 +894,28 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   }.withoutNulls,
                                                 );
                                               } else {
-                                                context.pushNamed(
-                                                  'OnlineGamePage',
-                                                  queryParameters: {
-                                                    'game': serializeParam(
-                                                      GameStruct(
-                                                        id: CreateGameCall.id(
-                                                          (_model.createGameRes
-                                                                  ?.jsonBody ??
-                                                              ''),
-                                                        ),
-                                                        type: _model
-                                                            .dropDownValue1,
-                                                        sudoku: SudokuStruct(
-                                                          id: CreateGameCall
-                                                              .sudokuId(
-                                                            (_model.createGameRes
-                                                                    ?.jsonBody ??
-                                                                ''),
-                                                          ),
-                                                          difficulty: _model
-                                                              .dropDownValue3,
-                                                          size: _model
-                                                              .dropDownValue4,
-                                                          field: functions
-                                                              .fieldFromStr(
-                                                                  CreateGameCall
-                                                                      .sudokuData(
-                                                            (_model.createGameRes
-                                                                    ?.jsonBody ??
-                                                                ''),
-                                                          ).toString()),
-                                                        ),
-                                                        players: CreateGameCall
-                                                                .players(
-                                                          (_model.createGameRes
-                                                                  ?.jsonBody ??
-                                                              ''),
-                                                        )
-                                                            ?.map((e) =>
-                                                                UserStruct
-                                                                    .maybeFromMap(
-                                                                        e))
-                                                            .withoutNulls
-                                                            .toList(),
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'Авторизуйтесь, чтобы играть онлайн!',
+                                                      style: TextStyle(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
                                                       ),
-                                                      ParamType.DataStruct,
                                                     ),
-                                                  }.withoutNulls,
+                                                    duration: const Duration(
+                                                        milliseconds: 2000),
+                                                    backgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .warning,
+                                                  ),
                                                 );
                                               }
                                             }
-                                          } else {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  'Авторизуйтесь, чтобы создать игру!',
-                                                  style: TextStyle(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryText,
-                                                  ),
-                                                ),
-                                                duration: const Duration(
-                                                    milliseconds: 2000),
-                                                backgroundColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .warning,
-                                              ),
-                                            );
                                           }
 
                                           setState(() {});
@@ -875,6 +1011,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
+                                              setState(() {
+                                                FFAppState().rebuildAllPages =
+                                                    FFAppState()
+                                                            .rebuildAllPages +
+                                                        1;
+                                              });
                                               if (gameItem.type ==
                                                   GameType.Classic) {
                                                 context.pushNamed(
@@ -1211,9 +1353,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     FFAppState()
                                                                         .authToken,
                                                               );
-                                                              setState(() =>
-                                                                  _model.apiRequestCompleter2 =
-                                                                      null);
+                                                              FFAppState()
+                                                                  .update(() {
+                                                                FFAppState()
+                                                                        .rebuildAllPages =
+                                                                    FFAppState()
+                                                                            .rebuildAllPages +
+                                                                        1;
+                                                              });
 
                                                               setState(() {});
                                                             },
@@ -1241,25 +1388,125 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             },
                           );
                         } else {
-                          return Align(
-                            alignment: const AlignmentDirectional(0.0, 0.0),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  30.0, 0.0, 30.0, 0.0),
-                              child: Text(
-                                FFLocalizations.of(context).getText(
-                                  'bmck1jqk' /* Доступно только авторизованным... */,
+                          return Builder(
+                            builder: (context) {
+                              final game = FFAppState()
+                                  .localGames
+                                  .where((e) => !e.isFinished)
+                                  .toList();
+                              return RefreshIndicator(
+                                key: const Key('RefreshIndicator_dnkhax8x'),
+                                onRefresh: () async {
+                                  setState(
+                                      () => _model.apiRequestCompleter1 = null);
+                                  await _model.waitForApiRequestCompleted1();
+                                },
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: game.length,
+                                  itemBuilder: (context, gameIndex) {
+                                    final gameItem = game[gameIndex];
+                                    return Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          10.0, 10.0, 10.0, 1.0),
+                                      child: InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          context.pushNamed(
+                                            'GamePage',
+                                            queryParameters: {
+                                              'game': serializeParam(
+                                                gameItem,
+                                                ParamType.DataStruct,
+                                              ),
+                                              'globalIndex': serializeParam(
+                                                functions.getGameIndex(
+                                                    FFAppState()
+                                                        .localGames
+                                                        .toList(),
+                                                    gameItem.id),
+                                                ParamType.int,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+                                        },
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          elevation: 3.0,
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 100.0,
+                                            decoration: BoxDecoration(
+                                              color: functions.isPlayerInGame(
+                                                      gameItem,
+                                                      FFAppState().user)
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .secondaryBackground
+                                                  : FlutterFlowTheme.of(context)
+                                                      .accent4,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Align(
+                                                  alignment:
+                                                      const AlignmentDirectional(
+                                                          0.0, 0.0),
+                                                  child: Text(
+                                                    valueOrDefault<String>(
+                                                      (int size, String dif,
+                                                              String type) {
+                                                        return '$size✕$size | $dif | $type';
+                                                      }(
+                                                          gameItem.sudoku.size,
+                                                          gameItem.sudoku
+                                                              .difficulty!.name,
+                                                          gameItem.type!.name),
+                                                      '---',
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .titleLarge
+                                                        .override(
+                                                          fontFamily: 'Outfit',
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  FFLocalizations.of(context)
+                                                      .getText(
+                                                    'kklm20t3' /* Локальная игра */,
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                textAlign: TextAlign.center,
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      fontSize: 22.0,
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                            ),
+                              );
+                            },
                           );
                         }
                       },
@@ -1289,13 +1536,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   ),
                                 );
                               }
-                              final arciveGamesGetFinishedGamesResponse =
+                              final archiveGamesGetFinishedGamesResponse =
                                   snapshot.data!;
                               return Builder(
                                 builder: (context) {
                                   final game = functions
                                       .gamesFromJson(
-                                          arciveGamesGetFinishedGamesResponse
+                                          archiveGamesGetFinishedGamesResponse
                                               .bodyText,
                                           FFAppState().user.id)
                                       .toList();
@@ -1443,25 +1690,113 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             },
                           );
                         } else {
-                          return Align(
-                            alignment: const AlignmentDirectional(0.0, 0.0),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  30.0, 0.0, 30.0, 0.0),
-                              child: Text(
-                                FFLocalizations.of(context).getText(
-                                  'sskf0oq6' /* Доступно только авторизованным... */,
+                          return Builder(
+                            builder: (context) {
+                              final game = FFAppState()
+                                  .localGames
+                                  .where((e) => e.isFinished)
+                                  .toList();
+                              return RefreshIndicator(
+                                key: const Key('RefreshIndicator_34p10ie6'),
+                                onRefresh: () async {
+                                  setState(
+                                      () => _model.apiRequestCompleter2 = null);
+                                  await _model.waitForApiRequestCompleted2();
+                                },
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: game.length,
+                                  itemBuilder: (context, gameIndex) {
+                                    final gameItem = game[gameIndex];
+                                    return Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          10.0, 10.0, 10.0, 1.0),
+                                      child: InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          context.pushNamed(
+                                            'FinishedGamePage',
+                                            queryParameters: {
+                                              'game': serializeParam(
+                                                gameItem,
+                                                ParamType.DataStruct,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+                                        },
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          elevation: 3.0,
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 100.0,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Align(
+                                                  alignment:
+                                                      const AlignmentDirectional(
+                                                          0.0, 0.0),
+                                                  child: Text(
+                                                    valueOrDefault<String>(
+                                                      (int size, String dif,
+                                                              String type) {
+                                                        return '$size✕$size | $dif | $type';
+                                                      }(
+                                                          gameItem.sudoku.size,
+                                                          gameItem.sudoku
+                                                              .difficulty!.name,
+                                                          gameItem.type!.name),
+                                                      '---',
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .titleLarge
+                                                        .override(
+                                                          fontFamily: 'Outfit',
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  FFLocalizations.of(context)
+                                                      .getText(
+                                                    '95e3z0p4' /* Локальная игра */,
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                textAlign: TextAlign.center,
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      fontSize: 22.0,
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                            ),
+                              );
+                            },
                           );
                         }
                       },

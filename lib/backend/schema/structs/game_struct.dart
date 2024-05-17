@@ -15,6 +15,7 @@ class GameStruct extends BaseStruct {
     DateTime? startTimestamp,
     int? winnerId,
     int? mistakes,
+    bool? isFinished,
   })  : _id = id,
         _type = type,
         _sudoku = sudoku,
@@ -22,7 +23,8 @@ class GameStruct extends BaseStruct {
         _players = players,
         _startTimestamp = startTimestamp,
         _winnerId = winnerId,
-        _mistakes = mistakes;
+        _mistakes = mistakes,
+        _isFinished = isFinished;
 
   // "id" field.
   int? _id;
@@ -80,6 +82,12 @@ class GameStruct extends BaseStruct {
   void incrementMistakes(int amount) => _mistakes = mistakes + amount;
   bool hasMistakes() => _mistakes != null;
 
+  // "is_finished" field.
+  bool? _isFinished;
+  bool get isFinished => _isFinished ?? false;
+  set isFinished(bool? val) => _isFinished = val;
+  bool hasIsFinished() => _isFinished != null;
+
   static GameStruct fromMap(Map<String, dynamic> data) => GameStruct(
         id: castToType<int>(data['id']),
         type: deserializeEnum<GameType>(data['type']),
@@ -92,6 +100,7 @@ class GameStruct extends BaseStruct {
         startTimestamp: data['startTimestamp'] as DateTime?,
         winnerId: castToType<int>(data['winnerId']),
         mistakes: castToType<int>(data['mistakes']),
+        isFinished: data['is_finished'] as bool?,
       );
 
   static GameStruct? maybeFromMap(dynamic data) =>
@@ -106,6 +115,7 @@ class GameStruct extends BaseStruct {
         'startTimestamp': _startTimestamp,
         'winnerId': _winnerId,
         'mistakes': _mistakes,
+        'is_finished': _isFinished,
       }.withoutNulls;
 
   @override
@@ -142,6 +152,10 @@ class GameStruct extends BaseStruct {
         'mistakes': serializeParam(
           _mistakes,
           ParamType.int,
+        ),
+        'is_finished': serializeParam(
+          _isFinished,
+          ParamType.bool,
         ),
       }.withoutNulls;
 
@@ -189,6 +203,11 @@ class GameStruct extends BaseStruct {
           ParamType.int,
           false,
         ),
+        isFinished: deserializeParam(
+          data['is_finished'],
+          ParamType.bool,
+          false,
+        ),
       );
 
   @override
@@ -205,12 +224,22 @@ class GameStruct extends BaseStruct {
         listEquality.equals(players, other.players) &&
         startTimestamp == other.startTimestamp &&
         winnerId == other.winnerId &&
-        mistakes == other.mistakes;
+        mistakes == other.mistakes &&
+        isFinished == other.isFinished;
   }
 
   @override
-  int get hashCode => const ListEquality().hash(
-      [id, type, sudoku, timer, players, startTimestamp, winnerId, mistakes]);
+  int get hashCode => const ListEquality().hash([
+        id,
+        type,
+        sudoku,
+        timer,
+        players,
+        startTimestamp,
+        winnerId,
+        mistakes,
+        isFinished
+      ]);
 }
 
 GameStruct createGameStruct({
@@ -221,6 +250,7 @@ GameStruct createGameStruct({
   DateTime? startTimestamp,
   int? winnerId,
   int? mistakes,
+  bool? isFinished,
 }) =>
     GameStruct(
       id: id,
@@ -230,4 +260,5 @@ GameStruct createGameStruct({
       startTimestamp: startTimestamp,
       winnerId: winnerId,
       mistakes: mistakes,
+      isFinished: isFinished,
     );

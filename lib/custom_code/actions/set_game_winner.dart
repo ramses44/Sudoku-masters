@@ -14,4 +14,5 @@ Future setGameWinner(
   int winnerId,
 ) async {
   game.winnerId = winnerId;
+  game.isFinished = true;
 }

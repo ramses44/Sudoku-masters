@@ -431,7 +431,7 @@ class _GamePageWidgetState extends State<GamePageWidget> {
                                                                       cellXItem,
                                                                       cellYItem)) {
                                                                     return const Color(
-                                                                        0xFF53A4FF);
+                                                                        0xFF0056C9);
                                                                   } else {
                                                                     return const Color(
                                                                         0xFFFF000F);
@@ -985,15 +985,29 @@ class _GamePageWidgetState extends State<GamePageWidget> {
                                                             }
                                                           }
 
-                                                          if (widget.game
-                                                                  ?.winnerId !=
-                                                              0) {
-                                                            setState(() {
+                                                          if (widget.game!
+                                                              .isFinished) {
+                                                            if (FFAppState()
+                                                                .user
+                                                                .hasId()) {
                                                               FFAppState()
-                                                                  .removeAtIndexFromLocalGames(
-                                                                      widget
-                                                                          .globalIndex!);
-                                                            });
+                                                                  .update(() {
+                                                                FFAppState()
+                                                                    .removeAtIndexFromLocalGames(
+                                                                        widget
+                                                                            .globalIndex!);
+                                                              });
+                                                            } else {
+                                                              FFAppState()
+                                                                  .update(() {
+                                                                FFAppState()
+                                                                        .rebuildAllPages =
+                                                                    FFAppState()
+                                                                            .rebuildAllPages +
+                                                                        1;
+                                                              });
+                                                            }
+
                                                             if (Navigator.of(
                                                                     context)
                                                                 .canPop()) {

@@ -94,7 +94,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                     ),
                   ),
                   Switch.adaptive(
-                    value: _model.switchValue1 ??= false,
+                    value: _model.switchValue1 ??=
+                        Theme.of(context).brightness == Brightness.dark,
                     onChanged: (newValue) async {
                       setState(() => _model.switchValue1 = newValue);
                       if (newValue) {
@@ -143,7 +144,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                             ),
                       ),
                       Switch.adaptive(
-                        value: _model.switchValue2 ??= false,
+                        value: _model.switchValue2 ??=
+                            FFLocalizations.of(context).languageCode == 'en',
                         onChanged: (newValue) async {
                           setState(() => _model.switchValue2 = newValue);
                           if (newValue) {

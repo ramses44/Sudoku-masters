@@ -1,4 +1,5 @@
 import '/backend/api_requests/api_calls.dart';
+import '/backend/schema/enums/enums.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/chats_shimmer_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -235,7 +236,9 @@ class _FinishedGamePageWidgetState extends State<FinishedGamePageWidget> {
             },
           ),
           title: Text(
-            widget.game?.winnerId == FFAppState().user.id
+            ((widget.game?.type == GameType.Cooperative) &&
+                        (widget.game?.winnerId != -1)) ||
+                    (widget.game?.winnerId == FFAppState().user.id)
                 ? 'Win / Победа'
                 : 'Lose / Проигрыш',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -246,18 +249,21 @@ class _FinishedGamePageWidgetState extends State<FinishedGamePageWidget> {
                 ),
           ),
           actions: [
-            FlutterFlowIconButton(
-              borderColor: FlutterFlowTheme.of(context).transparent,
-              buttonSize: 40.0,
-              fillColor: FlutterFlowTheme.of(context).transparent,
-              icon: Icon(
-                Icons.people,
-                color: FlutterFlowTheme.of(context).info,
-                size: 24.0,
+            Visibility(
+              visible: FFAppState().user.hasId(),
+              child: FlutterFlowIconButton(
+                borderColor: FlutterFlowTheme.of(context).transparent,
+                buttonSize: 40.0,
+                fillColor: FlutterFlowTheme.of(context).transparent,
+                icon: Icon(
+                  Icons.people,
+                  color: FlutterFlowTheme.of(context).info,
+                  size: 24.0,
+                ),
+                onPressed: () async {
+                  scaffoldKey.currentState!.openEndDrawer();
+                },
               ),
-              onPressed: () async {
-                scaffoldKey.currentState!.openEndDrawer();
-              },
             ),
           ],
           centerTitle: true,
@@ -550,52 +556,54 @@ class _FinishedGamePageWidgetState extends State<FinishedGamePageWidget> {
                       ],
                     ),
                   ),
-                  Align(
-                    alignment: const AlignmentDirectional(0.0, 1.0),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
-                      child: FFButtonWidget(
-                        onPressed: () async {
-                          setState(() {
-                            _model.share = !_model.share;
-                          });
-                        },
-                        text: FFLocalizations.of(context).getText(
-                          'sn4499x5' /* Поделиться судоку */,
-                        ),
-                        icon: const Icon(
-                          Icons.share,
-                          size: 20.0,
-                        ),
-                        options: FFButtonOptions(
-                          height: functions.timerFieldHeight(
-                              MediaQuery.sizeOf(context).height),
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              24.0, 0.0, 24.0, 0.0),
-                          iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color: FlutterFlowTheme.of(context).alternate,
-                          textStyle: FlutterFlowTheme.of(context)
-                              .titleSmall
-                              .override(
-                                fontFamily: 'Readex Pro',
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                fontSize: functions.numberButtonFontSize(
-                                    MediaQuery.sizeOf(context).height),
-                                letterSpacing: 0.0,
-                              ),
-                          elevation: 3.0,
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                            width: 1.0,
+                  if (FFAppState().user.hasId())
+                    Align(
+                      alignment: const AlignmentDirectional(0.0, 1.0),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+                        child: FFButtonWidget(
+                          onPressed: () async {
+                            setState(() {
+                              _model.share = !_model.share;
+                            });
+                          },
+                          text: FFLocalizations.of(context).getText(
+                            'sn4499x5' /* Поделиться судоку */,
                           ),
-                          borderRadius: BorderRadius.circular(8.0),
+                          icon: const Icon(
+                            Icons.share,
+                            size: 20.0,
+                          ),
+                          options: FFButtonOptions(
+                            height: functions.timerFieldHeight(
+                                MediaQuery.sizeOf(context).height),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                24.0, 0.0, 24.0, 0.0),
+                            iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            color: FlutterFlowTheme.of(context).alternate,
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  fontSize: functions.numberButtonFontSize(
+                                      MediaQuery.sizeOf(context).height),
+                                  letterSpacing: 0.0,
+                                ),
+                            elevation: 3.0,
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          showLoadingIndicator: false,
                         ),
-                        showLoadingIndicator: false,
                       ),
                     ),
-                  ),
                   if (_model.share)
                     Padding(
                       padding:
