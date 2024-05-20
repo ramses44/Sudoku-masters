@@ -732,7 +732,7 @@ class _MessengerPageWidgetState extends State<MessengerPageWidget>
                                                       ),
                                                       onPressed: () async {
                                                         setState(() {
-                                                          _model.searchingChat =
+                                                          _model.creatingChat =
                                                               false;
                                                         });
                                                       },

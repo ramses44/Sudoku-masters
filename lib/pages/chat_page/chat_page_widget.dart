@@ -265,7 +265,6 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                         child: ListView.builder(
                           padding: EdgeInsets.zero,
                           reverse: true,
-                          shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemCount: newMessage.length,
                           itemBuilder: (context, newMessageIndex) {
@@ -274,24 +273,15 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                               builder: (context) {
                                 if (newMessageItem.sender.id ==
                                     FFAppState().user.id) {
-                                  return Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        60.0, 5.0, 10.0, 5.0),
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      elevation: 3.0,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(50.0),
-                                          bottomRight: Radius.circular(0.0),
-                                          topLeft: Radius.circular(50.0),
-                                          topRight: Radius.circular(50.0),
-                                        ),
-                                      ),
-                                      child: Container(
-                                        width: 50.0,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xFFA7C0FF),
+                                  return Align(
+                                    alignment: const AlignmentDirectional(1.0, 0.0),
+                                    child: Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          60.0, 5.0, 10.0, 5.0),
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        elevation: 3.0,
+                                        shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(50.0),
                                             bottomRight: Radius.circular(0.0),
@@ -299,449 +289,419 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                                             topRight: Radius.circular(50.0),
                                           ),
                                         ),
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  20.0, 10.0, 20.0, 10.0),
-                                          child: Column(
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                            color: Color(0xFFA7C0FF),
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(50.0),
+                                              bottomRight: Radius.circular(0.0),
+                                              topLeft: Radius.circular(50.0),
+                                              topRight: Radius.circular(50.0),
+                                            ),
+                                          ),
+                                          child: Row(
                                             mainAxisSize: MainAxisSize.min,
                                             mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                                MainAxisAlignment.end,
                                             children: [
-                                              Align(
-                                                alignment: const AlignmentDirectional(
-                                                    0.0, 0.0),
-                                                child: Text(
-                                                  valueOrDefault<String>(
-                                                    newMessageItem.sender.alias,
-                                                    'ㅤ',
-                                                  ),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .titleLarge
-                                                      .override(
-                                                        fontFamily: 'Outfit',
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                                ),
-                                              ),
-                                              Align(
-                                                alignment: const AlignmentDirectional(
-                                                    0.0, 0.0),
-                                                child: Builder(
-                                                  builder: (context) {
-                                                    if (newMessageItem.type ==
-                                                        MessageType.TEXT) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    5.0,
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          valueOrDefault<
-                                                              String>(
-                                                            newMessageItem.data,
-                                                            'ㅤ',
-                                                          ),
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        20.0, 10.0, 20.0, 10.0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          const AlignmentDirectional(
+                                                              0.0, 0.0),
+                                                      child: Text(
+                                                        valueOrDefault<String>(
+                                                          newMessageItem
+                                                              .sender.alias,
+                                                          'ㅤ',
                                                         ),
-                                                      );
-                                                    } else if (newMessageItem
-                                                            .type ==
-                                                        MessageType.SUDOKU) {
-                                                      return Align(
-                                                        alignment:
-                                                            const AlignmentDirectional(
-                                                                0.0, 0.0),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
-                                                              child:
-                                                                  Image.asset(
-                                                                'assets/images/sudoku-ico.png',
-                                                                width: 100.0,
-                                                                height: 100.0,
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                              ),
-                                                            ),
-                                                            Padding(
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
+                                                      ),
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          const AlignmentDirectional(
+                                                              0.0, 0.0),
+                                                      child: Builder(
+                                                        builder: (context) {
+                                                          if (newMessageItem
+                                                                  .type ==
+                                                              MessageType
+                                                                  .TEXT) {
+                                                            return Padding(
                                                               padding:
                                                                   const EdgeInsetsDirectional
                                                                       .fromSTEB(
-                                                                          20.0,
+                                                                          5.0,
                                                                           0.0,
                                                                           0.0,
                                                                           0.0),
-                                                              child: Column(
+                                                              child: Text(
+                                                                valueOrDefault<
+                                                                    String>(
+                                                                  newMessageItem
+                                                                      .data,
+                                                                  'ㅤ',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
+                                                              ),
+                                                            );
+                                                          } else if (newMessageItem
+                                                                  .type ==
+                                                              MessageType
+                                                                  .SUDOKU) {
+                                                            return Align(
+                                                              alignment:
+                                                                  const AlignmentDirectional(
+                                                                      0.0, 0.0),
+                                                              child: Row(
                                                                 mainAxisSize:
                                                                     MainAxisSize
-                                                                        .max,
+                                                                        .min,
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
                                                                         .start,
                                                                 children: [
-                                                                  Text(
-                                                                    FFLocalizations.of(
-                                                                            context)
-                                                                        .getText(
-                                                                      '9j20p4xj' /* Судоку */,
-                                                                    ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          fontSize:
-                                                                              18.0,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
-                                                                  ),
-                                                                  Text(
-                                                                    (String
-                                                                        data) {
-                                                                      return '${data
-                                                                              .split(' ')
-                                                                              .skip(1)
-                                                                              .first}x${data.split(' ').skip(1).join(' | ')}';
-                                                                    }(newMessageItem
-                                                                        .data),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          fontSize:
-                                                                              18.0,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
-                                                                  ),
-                                                                  FFButtonWidget(
-                                                                    onPressed:
-                                                                        () async {
-                                                                      _model.createGameRes = await GameGroup
-                                                                          .gameFromSudokuCall
-                                                                          .call(
-                                                                        sudokuId: (String
-                                                                            data) {
-                                                                          return int.parse(data
-                                                                              .split(' ')
-                                                                              .first);
-                                                                        }(newMessageItem
-                                                                            .data),
-                                                                        authToken:
-                                                                            FFAppState().authToken,
-                                                                      );
-                                                                      if ((_model
-                                                                              .createGameRes
-                                                                              ?.succeeded ??
-                                                                          true)) {
-                                                                        setState(
-                                                                            () {
-                                                                          FFAppState()
-                                                                              .addToLocalGames(GameStruct(
-                                                                            id: GameGroup.gameFromSudokuCall.id(
-                                                                              (_model.createGameRes?.jsonBody ?? ''),
-                                                                            ),
-                                                                            type:
-                                                                                GameType.Classic,
-                                                                            sudoku:
-                                                                                SudokuStruct(
-                                                                              id: GameGroup.gameFromSudokuCall.sudokuId(
-                                                                                (_model.createGameRes?.jsonBody ?? ''),
-                                                                              ),
-                                                                              difficulty: functions.difficultyFromStr(GameGroup.gameFromSudokuCall
-                                                                                  .sudokuDifficulty(
-                                                                                    (_model.createGameRes?.jsonBody ?? ''),
-                                                                                  )
-                                                                                  .toString()),
-                                                                              size: GameGroup.gameFromSudokuCall.sudokuSize(
-                                                                                (_model.createGameRes?.jsonBody ?? ''),
-                                                                              ),
-                                                                              field: functions.fieldFromStr(GameGroup.gameFromSudokuCall
-                                                                                  .sudokuData(
-                                                                                    (_model.createGameRes?.jsonBody ?? ''),
-                                                                                  )
-                                                                                  .toString()),
-                                                                            ),
-                                                                          ));
-                                                                        });
-                                                                        if (Navigator.of(context)
-                                                                            .canPop()) {
-                                                                          context
-                                                                              .pop();
-                                                                        }
-                                                                        context
-                                                                            .pushNamed(
-                                                                          'GamePage',
-                                                                          queryParameters:
-                                                                              {
-                                                                            'game':
-                                                                                serializeParam(
-                                                                              FFAppState().localGames.last,
-                                                                              ParamType.DataStruct,
-                                                                            ),
-                                                                            'globalIndex':
-                                                                                serializeParam(
-                                                                              FFAppState().localGames.length - 1,
-                                                                              ParamType.int,
-                                                                            ),
-                                                                          }.withoutNulls,
-                                                                        );
-                                                                      }
-
-                                                                      setState(
-                                                                          () {});
-                                                                    },
-                                                                    text: FFLocalizations.of(
-                                                                            context)
-                                                                        .getText(
-                                                                      '3npfim3i' /* Решить */,
-                                                                    ),
-                                                                    options:
-                                                                        FFButtonOptions(
+                                                                  ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            8.0),
+                                                                    child: Image
+                                                                        .asset(
+                                                                      'assets/images/sudoku-ico.png',
+                                                                      width:
+                                                                          100.0,
                                                                       height:
-                                                                          40.0,
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                          24.0,
-                                                                          0.0,
-                                                                          24.0,
-                                                                          0.0),
-                                                                      iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .alternate,
-                                                                      textStyle: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleSmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primaryText,
-                                                                            fontSize:
-                                                                                18.0,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                          ),
-                                                                      borderSide:
-                                                                          const BorderSide(
-                                                                        color: Colors
-                                                                            .transparent,
-                                                                      ),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              8.0),
+                                                                          100.0,
+                                                                      fit: BoxFit
+                                                                          .contain,
                                                                     ),
                                                                   ),
-                                                                ].divide(const SizedBox(
-                                                                    height:
-                                                                        5.0)),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    } else if (newMessageItem
-                                                            .type ==
-                                                        MessageType.CONTACT) {
-                                                      return InkWell(
-                                                        splashColor:
-                                                            Colors.transparent,
-                                                        focusColor:
-                                                            Colors.transparent,
-                                                        hoverColor:
-                                                            Colors.transparent,
-                                                        highlightColor:
-                                                            Colors.transparent,
-                                                        onTap: () async {
-                                                          context.pushNamed(
-                                                            'UserInfoPage',
-                                                            queryParameters: {
-                                                              'userId':
-                                                                  serializeParam(
-                                                                (String
-                                                                    msgData) {
-                                                                  return int.parse(
-                                                                      msgData
-                                                                          .split(
-                                                                              ' ')
-                                                                          .first);
-                                                                }(newMessageItem
-                                                                    .data),
-                                                                ParamType.int,
-                                                              ),
-                                                            }.withoutNulls,
-                                                            extra: <String,
-                                                                dynamic>{
-                                                              kTransitionInfoKey:
-                                                                  const TransitionInfo(
-                                                                hasTransition:
-                                                                    true,
-                                                                transitionType:
-                                                                    PageTransitionType
-                                                                        .rightToLeft,
-                                                              ),
-                                                            },
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .transparent,
-                                                          ),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsetsDirectional
+                                                                  Padding(
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             20.0,
                                                                             0.0,
                                                                             0.0,
                                                                             0.0),
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                      FFLocalizations.of(
-                                                                              context)
-                                                                          .getText(
-                                                                        'bf5d5ckm' /* Контакт */,
-                                                                      ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            fontSize:
-                                                                                22.0,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      children:
+                                                                          [
+                                                                        Text(
+                                                                          FFLocalizations.of(context)
+                                                                              .getText(
+                                                                            '9j20p4xj' /* Судоку */,
                                                                           ),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                fontSize: 18.0,
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                        ),
+                                                                        Text(
+                                                                          (String
+                                                                              data) {
+                                                                            return '${data.split(' ').skip(1).first}x${data.split(' ').skip(1).join(' | ')}';
+                                                                          }(newMessageItem
+                                                                              .data),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                fontSize: 18.0,
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                        ),
+                                                                        FFButtonWidget(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            _model.createGameRes =
+                                                                                await GameGroup.gameFromSudokuCall.call(
+                                                                              sudokuId: (String data) {
+                                                                                return int.parse(data.split(' ').first);
+                                                                              }(newMessageItem.data),
+                                                                              authToken: FFAppState().authToken,
+                                                                            );
+                                                                            if ((_model.createGameRes?.succeeded ??
+                                                                                true)) {
+                                                                              setState(() {
+                                                                                FFAppState().addToLocalGames(GameStruct(
+                                                                                  id: GameGroup.gameFromSudokuCall.id(
+                                                                                    (_model.createGameRes?.jsonBody ?? ''),
+                                                                                  ),
+                                                                                  type: GameType.Classic,
+                                                                                  sudoku: SudokuStruct(
+                                                                                    id: GameGroup.gameFromSudokuCall.sudokuId(
+                                                                                      (_model.createGameRes?.jsonBody ?? ''),
+                                                                                    ),
+                                                                                    difficulty: functions.difficultyFromStr(GameGroup.gameFromSudokuCall
+                                                                                        .sudokuDifficulty(
+                                                                                          (_model.createGameRes?.jsonBody ?? ''),
+                                                                                        )
+                                                                                        .toString()),
+                                                                                    size: GameGroup.gameFromSudokuCall.sudokuSize(
+                                                                                      (_model.createGameRes?.jsonBody ?? ''),
+                                                                                    ),
+                                                                                    field: functions.fieldFromStr(GameGroup.gameFromSudokuCall
+                                                                                        .sudokuData(
+                                                                                          (_model.createGameRes?.jsonBody ?? ''),
+                                                                                        )
+                                                                                        .toString()),
+                                                                                  ),
+                                                                                ));
+                                                                              });
+                                                                              if (Navigator.of(context).canPop()) {
+                                                                                context.pop();
+                                                                              }
+                                                                              context.pushNamed(
+                                                                                'GamePage',
+                                                                                queryParameters: {
+                                                                                  'game': serializeParam(
+                                                                                    FFAppState().localGames.last,
+                                                                                    ParamType.DataStruct,
+                                                                                  ),
+                                                                                  'globalIndex': serializeParam(
+                                                                                    FFAppState().localGames.length - 1,
+                                                                                    ParamType.int,
+                                                                                  ),
+                                                                                }.withoutNulls,
+                                                                              );
+                                                                            }
+
+                                                                            setState(() {});
+                                                                          },
+                                                                          text:
+                                                                              FFLocalizations.of(context).getText(
+                                                                            '3npfim3i' /* Решить */,
+                                                                          ),
+                                                                          options:
+                                                                              FFButtonOptions(
+                                                                            height:
+                                                                                40.0,
+                                                                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                                24.0,
+                                                                                0.0,
+                                                                                24.0,
+                                                                                0.0),
+                                                                            iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).alternate,
+                                                                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  color: FlutterFlowTheme.of(context).primaryText,
+                                                                                  fontSize: 18.0,
+                                                                                  letterSpacing: 0.0,
+                                                                                ),
+                                                                            borderSide:
+                                                                                const BorderSide(
+                                                                              color: Colors.transparent,
+                                                                            ),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8.0),
+                                                                          ),
+                                                                        ),
+                                                                      ].divide(const SizedBox(
+                                                                              height: 5.0)),
                                                                     ),
-                                                                    Text(
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          } else if (newMessageItem
+                                                                  .type ==
+                                                              MessageType
+                                                                  .CONTACT) {
+                                                            return InkWell(
+                                                              splashColor: Colors
+                                                                  .transparent,
+                                                              focusColor: Colors
+                                                                  .transparent,
+                                                              hoverColor: Colors
+                                                                  .transparent,
+                                                              highlightColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              onTap: () async {
+                                                                context
+                                                                    .pushNamed(
+                                                                  'UserInfoPage',
+                                                                  queryParameters:
+                                                                      {
+                                                                    'userId':
+                                                                        serializeParam(
                                                                       (String
-                                                                          data) {
-                                                                        return '@${data.split(' ').last}';
+                                                                          msgData) {
+                                                                        return int.parse(msgData
+                                                                            .split(' ')
+                                                                            .first);
                                                                       }(newMessageItem
                                                                           .data),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryText,
-                                                                            fontSize:
-                                                                                16.0,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FontWeight.normal,
+                                                                      ParamType
+                                                                          .int,
+                                                                    ),
+                                                                  }.withoutNulls,
+                                                                  extra: <String,
+                                                                      dynamic>{
+                                                                    kTransitionInfoKey:
+                                                                        const TransitionInfo(
+                                                                      hasTransition:
+                                                                          true,
+                                                                      transitionType:
+                                                                          PageTransitionType
+                                                                              .rightToLeft,
+                                                                    ),
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .transparent,
+                                                                ),
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          20.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children:
+                                                                            [
+                                                                          Text(
+                                                                            FFLocalizations.of(context).getText(
+                                                                              'bf5d5ckm' /* Контакт */,
+                                                                            ),
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  fontSize: 22.0,
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                ),
                                                                           ),
+                                                                          Text(
+                                                                            (String
+                                                                                data) {
+                                                                              return '@${data.split(' ').last}';
+                                                                            }(newMessageItem.data),
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                  fontSize: 16.0,
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FontWeight.normal,
+                                                                                ),
+                                                                          ),
+                                                                        ].divide(const SizedBox(height: 5.0)),
+                                                                      ),
+                                                                    ),
+                                                                    Opacity(
+                                                                      opacity:
+                                                                          0.5,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .arrow_forward,
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .secondaryText,
+                                                                        size:
+                                                                            50.0,
+                                                                      ),
                                                                     ),
                                                                   ].divide(const SizedBox(
-                                                                      height:
-                                                                          5.0)),
+                                                                      width:
+                                                                          10.0)),
                                                                 ),
                                                               ),
-                                                              Opacity(
-                                                                opacity: 0.5,
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .arrow_forward,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                                  size: 50.0,
-                                                                ),
+                                                            );
+                                                          } else {
+                                                            return Text(
+                                                              FFLocalizations.of(
+                                                                      context)
+                                                                  .getText(
+                                                                'nieqetx6' /* Unsupported message data. Plea... */,
                                                               ),
-                                                            ].divide(const SizedBox(
-                                                                width: 10.0)),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      return Text(
-                                                        FFLocalizations.of(
-                                                                context)
-                                                            .getText(
-                                                          'nieqetx6' /* Unsupported message data. Plea... */,
-                                                        ),
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .italic,
-                                                                ),
-                                                      );
-                                                    }
-                                                  },
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .italic,
+                                                                  ),
+                                                            );
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],
@@ -751,470 +711,436 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                                     ),
                                   );
                                 } else {
-                                  return Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        10.0, 5.0, 60.0, 5.0),
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      elevation: 3.0,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(0.0),
-                                          bottomRight: Radius.circular(50.0),
-                                          topLeft: Radius.circular(50.0),
-                                          topRight: Radius.circular(50.0),
-                                        ),
-                                      ),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                          borderRadius: const BorderRadius.only(
+                                  return Align(
+                                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                                    child: Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          10.0, 5.0, 60.0, 5.0),
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        elevation: 3.0,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(0.0),
                                             bottomRight: Radius.circular(50.0),
                                             topLeft: Radius.circular(50.0),
                                             topRight: Radius.circular(50.0),
                                           ),
                                         ),
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  20.0, 10.0, 20.0, 10.0),
-                                          child: Column(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            borderRadius: const BorderRadius.only(
+                                              bottomLeft: Radius.circular(0.0),
+                                              bottomRight:
+                                                  Radius.circular(50.0),
+                                              topLeft: Radius.circular(50.0),
+                                              topRight: Radius.circular(50.0),
+                                            ),
+                                          ),
+                                          child: Row(
                                             mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             children: [
-                                              Align(
-                                                alignment: const AlignmentDirectional(
-                                                    0.0, 0.0),
-                                                child: Text(
-                                                  newMessageItem.sender.alias,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .titleLarge
-                                                      .override(
-                                                        fontFamily: 'Outfit',
-                                                        letterSpacing: 0.0,
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        20.0, 10.0, 20.0, 10.0),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          const AlignmentDirectional(
+                                                              0.0, 0.0),
+                                                      child: Text(
+                                                        newMessageItem
+                                                            .sender.alias,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Outfit',
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                ),
                                                       ),
-                                                ),
-                                              ),
-                                              Align(
-                                                alignment: const AlignmentDirectional(
-                                                    0.0, 0.0),
-                                                child: Builder(
-                                                  builder: (context) {
-                                                    if (newMessageItem.type ==
-                                                        MessageType.TEXT) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    5.0,
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          valueOrDefault<
-                                                              String>(
-                                                            newMessageItem.data,
-                                                            'ㅤ',
-                                                          ),
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                        ),
-                                                      );
-                                                    } else if (newMessageItem
-                                                            .type ==
-                                                        MessageType.SUDOKU) {
-                                                      return Align(
-                                                        alignment:
-                                                            const AlignmentDirectional(
-                                                                0.0, 0.0),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
-                                                              child:
-                                                                  Image.asset(
-                                                                'assets/images/sudoku-ico.png',
-                                                                width: 100.0,
-                                                                height: 100.0,
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                              ),
-                                                            ),
-                                                            Padding(
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          const AlignmentDirectional(
+                                                              0.0, 0.0),
+                                                      child: Builder(
+                                                        builder: (context) {
+                                                          if (newMessageItem
+                                                                  .type ==
+                                                              MessageType
+                                                                  .TEXT) {
+                                                            return Padding(
                                                               padding:
                                                                   const EdgeInsetsDirectional
                                                                       .fromSTEB(
-                                                                          20.0,
+                                                                          5.0,
                                                                           0.0,
                                                                           0.0,
                                                                           0.0),
-                                                              child: Column(
+                                                              child: Text(
+                                                                valueOrDefault<
+                                                                    String>(
+                                                                  newMessageItem
+                                                                      .data,
+                                                                  'ㅤ',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      letterSpacing:
+                                                                          0.0,
+                                                                    ),
+                                                              ),
+                                                            );
+                                                          } else if (newMessageItem
+                                                                  .type ==
+                                                              MessageType
+                                                                  .SUDOKU) {
+                                                            return Align(
+                                                              alignment:
+                                                                  const AlignmentDirectional(
+                                                                      0.0, 0.0),
+                                                              child: Row(
                                                                 mainAxisSize:
                                                                     MainAxisSize
-                                                                        .max,
+                                                                        .min,
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
                                                                         .start,
                                                                 children: [
-                                                                  Text(
-                                                                    FFLocalizations.of(
-                                                                            context)
-                                                                        .getText(
-                                                                      '6jfu5voj' /* Судоку */,
-                                                                    ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          fontSize:
-                                                                              18.0,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
-                                                                  ),
-                                                                  Text(
-                                                                    (String
-                                                                        data) {
-                                                                      return '${data
-                                                                              .split(' ')
-                                                                              .skip(1)
-                                                                              .first}x${data.split(' ').skip(1).join(' | ')}';
-                                                                    }(newMessageItem
-                                                                        .data),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Readex Pro',
-                                                                          fontSize:
-                                                                              18.0,
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
-                                                                  ),
-                                                                  FFButtonWidget(
-                                                                    onPressed:
-                                                                        () async {
-                                                                      _model.createGameRes1 = await GameGroup
-                                                                          .gameFromSudokuCall
-                                                                          .call(
-                                                                        sudokuId: (String
-                                                                            data) {
-                                                                          return int.parse(data
-                                                                              .split(' ')
-                                                                              .first);
-                                                                        }(newMessageItem
-                                                                            .data),
-                                                                        authToken:
-                                                                            FFAppState().authToken,
-                                                                      );
-                                                                      if ((_model
-                                                                              .createGameRes1
-                                                                              ?.succeeded ??
-                                                                          true)) {
-                                                                        setState(
-                                                                            () {
-                                                                          FFAppState()
-                                                                              .addToLocalGames(GameStruct(
-                                                                            id: GameGroup.gameFromSudokuCall.id(
-                                                                              (_model.createGameRes1?.jsonBody ?? ''),
-                                                                            ),
-                                                                            type:
-                                                                                GameType.Classic,
-                                                                            sudoku:
-                                                                                SudokuStruct(
-                                                                              id: GameGroup.gameFromSudokuCall.sudokuId(
-                                                                                (_model.createGameRes1?.jsonBody ?? ''),
-                                                                              ),
-                                                                              difficulty: functions.difficultyFromStr(GameGroup.gameFromSudokuCall
-                                                                                  .sudokuDifficulty(
-                                                                                    (_model.createGameRes1?.jsonBody ?? ''),
-                                                                                  )
-                                                                                  .toString()),
-                                                                              size: GameGroup.gameFromSudokuCall.sudokuSize(
-                                                                                (_model.createGameRes1?.jsonBody ?? ''),
-                                                                              ),
-                                                                              field: functions.fieldFromStr(GameGroup.gameFromSudokuCall
-                                                                                  .sudokuData(
-                                                                                    (_model.createGameRes1?.jsonBody ?? ''),
-                                                                                  )
-                                                                                  .toString()),
-                                                                            ),
-                                                                          ));
-                                                                        });
-                                                                        if (Navigator.of(context)
-                                                                            .canPop()) {
-                                                                          context
-                                                                              .pop();
-                                                                        }
-                                                                        context
-                                                                            .pushNamed(
-                                                                          'GamePage',
-                                                                          queryParameters:
-                                                                              {
-                                                                            'game':
-                                                                                serializeParam(
-                                                                              FFAppState().localGames.last,
-                                                                              ParamType.DataStruct,
-                                                                            ),
-                                                                            'globalIndex':
-                                                                                serializeParam(
-                                                                              FFAppState().localGames.length - 1,
-                                                                              ParamType.int,
-                                                                            ),
-                                                                          }.withoutNulls,
-                                                                        );
-                                                                      }
-
-                                                                      setState(
-                                                                          () {});
-                                                                    },
-                                                                    text: FFLocalizations.of(
-                                                                            context)
-                                                                        .getText(
-                                                                      'yr6o0721' /* Решить */,
-                                                                    ),
-                                                                    options:
-                                                                        FFButtonOptions(
+                                                                  ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            8.0),
+                                                                    child: Image
+                                                                        .asset(
+                                                                      'assets/images/sudoku-ico.png',
+                                                                      width:
+                                                                          100.0,
                                                                       height:
-                                                                          40.0,
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                          24.0,
-                                                                          0.0,
-                                                                          24.0,
-                                                                          0.0),
-                                                                      iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                      color: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .alternate,
-                                                                      textStyle: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .titleSmall
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primaryText,
-                                                                            fontSize:
-                                                                                18.0,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                          ),
-                                                                      borderSide:
-                                                                          const BorderSide(
-                                                                        color: Colors
-                                                                            .transparent,
-                                                                      ),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              8.0),
+                                                                          100.0,
+                                                                      fit: BoxFit
+                                                                          .contain,
                                                                     ),
                                                                   ),
-                                                                ].divide(const SizedBox(
-                                                                    height:
-                                                                        5.0)),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    } else if (newMessageItem
-                                                            .type ==
-                                                        MessageType.CONTACT) {
-                                                      return InkWell(
-                                                        splashColor:
-                                                            Colors.transparent,
-                                                        focusColor:
-                                                            Colors.transparent,
-                                                        hoverColor:
-                                                            Colors.transparent,
-                                                        highlightColor:
-                                                            Colors.transparent,
-                                                        onTap: () async {
-                                                          context.pushNamed(
-                                                            'UserInfoPage',
-                                                            queryParameters: {
-                                                              'userId':
-                                                                  serializeParam(
-                                                                (String
-                                                                    msgData) {
-                                                                  return int.parse(
-                                                                      msgData
-                                                                          .split(
-                                                                              ' ')
-                                                                          .first);
-                                                                }(newMessageItem
-                                                                    .data),
-                                                                ParamType.int,
-                                                              ),
-                                                            }.withoutNulls,
-                                                            extra: <String,
-                                                                dynamic>{
-                                                              kTransitionInfoKey:
-                                                                  const TransitionInfo(
-                                                                hasTransition:
-                                                                    true,
-                                                                transitionType:
-                                                                    PageTransitionType
-                                                                        .rightToLeft,
-                                                              ),
-                                                            },
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .transparent,
-                                                          ),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsetsDirectional
+                                                                  Padding(
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             20.0,
                                                                             0.0,
                                                                             0.0,
                                                                             0.0),
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                      FFLocalizations.of(
-                                                                              context)
-                                                                          .getText(
-                                                                        'q0fldfs6' /* Контакт */,
-                                                                      ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            fontSize:
-                                                                                22.0,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      children:
+                                                                          [
+                                                                        Text(
+                                                                          FFLocalizations.of(context)
+                                                                              .getText(
+                                                                            '9ifla6gj' /* Судоку */,
                                                                           ),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                fontSize: 18.0,
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                        ),
+                                                                        Text(
+                                                                          (String
+                                                                              data) {
+                                                                            return '${data.split(' ').skip(1).first}x${data.split(' ').skip(1).join(' | ')}';
+                                                                          }(newMessageItem
+                                                                              .data),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .bodyMedium
+                                                                              .override(
+                                                                                fontFamily: 'Readex Pro',
+                                                                                fontSize: 18.0,
+                                                                                letterSpacing: 0.0,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                        ),
+                                                                        FFButtonWidget(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            _model.createGameRes1 =
+                                                                                await GameGroup.gameFromSudokuCall.call(
+                                                                              sudokuId: (String data) {
+                                                                                return int.parse(data.split(' ').first);
+                                                                              }(newMessageItem.data),
+                                                                              authToken: FFAppState().authToken,
+                                                                            );
+                                                                            if ((_model.createGameRes1?.succeeded ??
+                                                                                true)) {
+                                                                              setState(() {
+                                                                                FFAppState().addToLocalGames(GameStruct(
+                                                                                  id: GameGroup.gameFromSudokuCall.id(
+                                                                                    (_model.createGameRes1?.jsonBody ?? ''),
+                                                                                  ),
+                                                                                  type: GameType.Classic,
+                                                                                  sudoku: SudokuStruct(
+                                                                                    id: GameGroup.gameFromSudokuCall.sudokuId(
+                                                                                      (_model.createGameRes1?.jsonBody ?? ''),
+                                                                                    ),
+                                                                                    difficulty: functions.difficultyFromStr(GameGroup.gameFromSudokuCall
+                                                                                        .sudokuDifficulty(
+                                                                                          (_model.createGameRes1?.jsonBody ?? ''),
+                                                                                        )
+                                                                                        .toString()),
+                                                                                    size: GameGroup.gameFromSudokuCall.sudokuSize(
+                                                                                      (_model.createGameRes1?.jsonBody ?? ''),
+                                                                                    ),
+                                                                                    field: functions.fieldFromStr(GameGroup.gameFromSudokuCall
+                                                                                        .sudokuData(
+                                                                                          (_model.createGameRes1?.jsonBody ?? ''),
+                                                                                        )
+                                                                                        .toString()),
+                                                                                  ),
+                                                                                ));
+                                                                              });
+                                                                              if (Navigator.of(context).canPop()) {
+                                                                                context.pop();
+                                                                              }
+                                                                              context.pushNamed(
+                                                                                'GamePage',
+                                                                                queryParameters: {
+                                                                                  'game': serializeParam(
+                                                                                    FFAppState().localGames.last,
+                                                                                    ParamType.DataStruct,
+                                                                                  ),
+                                                                                  'globalIndex': serializeParam(
+                                                                                    FFAppState().localGames.length - 1,
+                                                                                    ParamType.int,
+                                                                                  ),
+                                                                                }.withoutNulls,
+                                                                              );
+                                                                            }
+
+                                                                            setState(() {});
+                                                                          },
+                                                                          text:
+                                                                              FFLocalizations.of(context).getText(
+                                                                            '19tid3vy' /* Решить */,
+                                                                          ),
+                                                                          options:
+                                                                              FFButtonOptions(
+                                                                            height:
+                                                                                40.0,
+                                                                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                                24.0,
+                                                                                0.0,
+                                                                                24.0,
+                                                                                0.0),
+                                                                            iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).alternate,
+                                                                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  color: FlutterFlowTheme.of(context).primaryText,
+                                                                                  fontSize: 18.0,
+                                                                                  letterSpacing: 0.0,
+                                                                                ),
+                                                                            borderSide:
+                                                                                const BorderSide(
+                                                                              color: Colors.transparent,
+                                                                            ),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8.0),
+                                                                          ),
+                                                                        ),
+                                                                      ].divide(const SizedBox(
+                                                                              height: 5.0)),
                                                                     ),
-                                                                    Text(
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          } else if (newMessageItem
+                                                                  .type ==
+                                                              MessageType
+                                                                  .CONTACT) {
+                                                            return InkWell(
+                                                              splashColor: Colors
+                                                                  .transparent,
+                                                              focusColor: Colors
+                                                                  .transparent,
+                                                              hoverColor: Colors
+                                                                  .transparent,
+                                                              highlightColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              onTap: () async {
+                                                                context
+                                                                    .pushNamed(
+                                                                  'UserInfoPage',
+                                                                  queryParameters:
+                                                                      {
+                                                                    'userId':
+                                                                        serializeParam(
                                                                       (String
-                                                                          data) {
-                                                                        return '@${data.split(' ').last}';
+                                                                          msgData) {
+                                                                        return int.parse(msgData
+                                                                            .split(' ')
+                                                                            .first);
                                                                       }(newMessageItem
                                                                           .data),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Readex Pro',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondaryText,
-                                                                            fontSize:
-                                                                                16.0,
-                                                                            letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FontWeight.normal,
+                                                                      ParamType
+                                                                          .int,
+                                                                    ),
+                                                                  }.withoutNulls,
+                                                                  extra: <String,
+                                                                      dynamic>{
+                                                                    kTransitionInfoKey:
+                                                                        const TransitionInfo(
+                                                                      hasTransition:
+                                                                          true,
+                                                                      transitionType:
+                                                                          PageTransitionType
+                                                                              .rightToLeft,
+                                                                    ),
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .transparent,
+                                                                ),
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                          20.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children:
+                                                                            [
+                                                                          Text(
+                                                                            FFLocalizations.of(context).getText(
+                                                                              '71tq953q' /* Контакт */,
+                                                                            ),
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  fontSize: 22.0,
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                ),
                                                                           ),
+                                                                          Text(
+                                                                            (String
+                                                                                data) {
+                                                                              return '@${data.split(' ').last}';
+                                                                            }(newMessageItem.data),
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  fontFamily: 'Readex Pro',
+                                                                                  color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                  fontSize: 16.0,
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FontWeight.normal,
+                                                                                ),
+                                                                          ),
+                                                                        ].divide(const SizedBox(height: 5.0)),
+                                                                      ),
+                                                                    ),
+                                                                    Opacity(
+                                                                      opacity:
+                                                                          0.5,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .arrow_forward,
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .secondaryText,
+                                                                        size:
+                                                                            50.0,
+                                                                      ),
                                                                     ),
                                                                   ].divide(const SizedBox(
-                                                                      height:
-                                                                          5.0)),
+                                                                      width:
+                                                                          10.0)),
                                                                 ),
                                                               ),
-                                                              Opacity(
-                                                                opacity: 0.5,
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .arrow_forward,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                                  size: 50.0,
-                                                                ),
+                                                            );
+                                                          } else {
+                                                            return Text(
+                                                              FFLocalizations.of(
+                                                                      context)
+                                                                  .getText(
+                                                                'svbptldj' /* Unsupported message data. Plea... */,
                                                               ),
-                                                            ].divide(const SizedBox(
-                                                                width: 10.0)),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      return Text(
-                                                        FFLocalizations.of(
-                                                                context)
-                                                            .getText(
-                                                          'ngimtk78' /* Unsupported message data. Plea... */,
-                                                        ),
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .italic,
-                                                                ),
-                                                      );
-                                                    }
-                                                  },
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Readex Pro',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .italic,
+                                                                  ),
+                                                            );
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ].divide(
+                                                      const SizedBox(height: 5.0)),
                                                 ),
                                               ),
-                                            ].divide(const SizedBox(height: 5.0)),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -1371,457 +1297,488 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
               if (_model.seeingParticipants)
                 Align(
                   alignment: const AlignmentDirectional(0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      setState(() {
-                        _model.seeingParticipants = false;
-                      });
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      decoration: const BoxDecoration(),
-                      alignment: const AlignmentDirectional(0.0, 0.0),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(
-                          sigmaX: 2.0,
-                          sigmaY: 2.0,
-                        ),
-                        child: Align(
-                          alignment: const AlignmentDirectional(0.0, 0.0),
-                          child: Material(
-                            color: Colors.transparent,
-                            elevation: 5.0,
-                            shape: RoundedRectangleBorder(
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: const BoxDecoration(),
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: 2.0,
+                        sigmaY: 2.0,
+                      ),
+                      child: Align(
+                        alignment: const AlignmentDirectional(0.0, 0.0),
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 5.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          child: Container(
+                            width: 300.0,
+                            height: 500.0,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
                               borderRadius: BorderRadius.circular(25.0),
                             ),
-                            child: Container(
-                              width: 300.0,
-                              height: 500.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 20.0, 0.0, 20.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          FFLocalizations.of(context).getText(
-                                            'txtmnsf9' /* Список участников */,
-                                          ),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyLarge
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                fontSize: 20.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      10.0, 10.0, 10.0, 10.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          Align(
+                                            alignment:
+                                                const AlignmentDirectional(0.0, 0.0),
+                                            child: Padding(
+                                              padding: const EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 5.0, 0.0, 0.0),
+                                              child: Text(
+                                                FFLocalizations.of(context)
+                                                    .getText(
+                                                  'txtmnsf9' /* Список участников */,
+                                                ),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyLarge
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          fontSize: 20.0,
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
                                               ),
-                                        ),
-                                        Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.0, 1.0),
-                                          child: Builder(
-                                            builder: (context) {
-                                              final user = widget
-                                                      .chat?.participants
-                                                      .toList() ??
-                                                  [];
-                                              return SingleChildScrollView(
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: List.generate(
-                                                      user.length, (userIndex) {
-                                                    final userItem =
-                                                        user[userIndex];
-                                                    return Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  10.0,
-                                                                  5.0,
-                                                                  10.0,
-                                                                  5.0),
-                                                      child: Material(
-                                                        color:
-                                                            Colors.transparent,
-                                                        elevation: 3.0,
-                                                        shape:
-                                                            RoundedRectangleBorder(
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment:
+                                                const AlignmentDirectional(1.0, -1.0),
+                                            child: FlutterFlowIconButton(
+                                              borderColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .transparent,
+                                              borderRadius: 30.0,
+                                              buttonSize: 40.0,
+                                              fillColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .transparent,
+                                              icon: Icon(
+                                                Icons.close,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                                size: 24.0,
+                                              ),
+                                              onPressed: () async {
+                                                setState(() {
+                                                  _model.seeingParticipants =
+                                                      false;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Align(
+                                        alignment:
+                                            const AlignmentDirectional(0.0, 1.0),
+                                        child: Builder(
+                                          builder: (context) {
+                                            final user = widget
+                                                    .chat?.participants
+                                                    .toList() ??
+                                                [];
+                                            return SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: List.generate(
+                                                    user.length, (userIndex) {
+                                                  final userItem =
+                                                      user[userIndex];
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 5.0,
+                                                                0.0, 5.0),
+                                                    child: Material(
+                                                      color: Colors.transparent,
+                                                      elevation: 3.0,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(0.0),
+                                                      ),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryBackground,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
                                                                       0.0),
                                                         ),
-                                                        child: Container(
-                                                          width:
-                                                              double.infinity,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryBackground,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        0.0),
-                                                          ),
-                                                          child: InkWell(
-                                                            splashColor: Colors
-                                                                .transparent,
-                                                            focusColor: Colors
-                                                                .transparent,
-                                                            hoverColor: Colors
-                                                                .transparent,
-                                                            highlightColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            onTap: () async {
-                                                              context.pushNamed(
-                                                                'UserInfoPage',
-                                                                queryParameters:
-                                                                    {
-                                                                  'userId':
-                                                                      serializeParam(
-                                                                    userItem.id,
-                                                                    ParamType
-                                                                        .int,
-                                                                  ),
-                                                                }.withoutNulls,
-                                                              );
-                                                            },
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Stack(
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              10.0),
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .account_circle,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryText,
-                                                                        size:
-                                                                            50.0,
-                                                                      ),
-                                                                    ),
-                                                                    Align(
-                                                                      alignment: const AlignmentDirectional(
-                                                                          -1.0,
-                                                                          -1.0),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                            40.0,
-                                                                            10.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                        child:
-                                                                            Container(
-                                                                          height:
-                                                                              20.0,
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).secondary,
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(50.0),
-                                                                            shape:
-                                                                                BoxShape.rectangle,
-                                                                          ),
-                                                                          child:
-                                                                              Align(
-                                                                            alignment:
-                                                                                const AlignmentDirectional(0.0, 0.0),
-                                                                            child:
-                                                                                Padding(
-                                                                              padding: const EdgeInsetsDirectional.fromSTEB(6.0, 0.0, 6.0, 0.0),
-                                                                              child: Text(
-                                                                                valueOrDefault<String>(
-                                                                                  userItem.rating.toString(),
-                                                                                  '0',
-                                                                                ),
-                                                                                style: FlutterFlowTheme.of(context).titleMedium.override(
-                                                                                      fontFamily: 'Readex Pro',
-                                                                                      fontSize: 13.0,
-                                                                                      letterSpacing: 0.0,
-                                                                                    ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                        child: InkWell(
+                                                          splashColor: Colors
+                                                              .transparent,
+                                                          focusColor: Colors
+                                                              .transparent,
+                                                          hoverColor: Colors
+                                                              .transparent,
+                                                          highlightColor: Colors
+                                                              .transparent,
+                                                          onTap: () async {
+                                                            context.pushNamed(
+                                                              'UserInfoPage',
+                                                              queryParameters: {
+                                                                'userId':
+                                                                    serializeParam(
+                                                                  userItem.id,
+                                                                  ParamType.int,
                                                                 ),
-                                                                Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                          20.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          5.0),
-                                                                      child:
-                                                                          Text(
-                                                                        valueOrDefault<
-                                                                            String>(
-                                                                          userItem
-                                                                              .alias,
-                                                                          'ㅤ',
-                                                                        ),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .titleLarge
-                                                                            .override(
-                                                                              fontFamily: 'Outfit',
-                                                                              fontSize: 18.0,
-                                                                              letterSpacing: 0.0,
-                                                                            ),
-                                                                      ),
+                                                              }.withoutNulls,
+                                                            );
+                                                          },
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Stack(
+                                                                children: [
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            10.0),
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .account_circle,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryText,
+                                                                      size:
+                                                                          50.0,
                                                                     ),
-                                                                    Padding(
+                                                                  ),
+                                                                  Align(
+                                                                    alignment:
+                                                                        const AlignmentDirectional(
+                                                                            -1.0,
+                                                                            -1.0),
+                                                                    child:
+                                                                        Padding(
                                                                       padding: const EdgeInsetsDirectional.fromSTEB(
-                                                                          20.0,
-                                                                          0.0,
+                                                                          40.0,
+                                                                          10.0,
                                                                           0.0,
                                                                           0.0),
                                                                       child:
-                                                                          Text(
-                                                                        valueOrDefault<
-                                                                            String>(
-                                                                          (String
-                                                                              username) {
-                                                                            return '@$username';
-                                                                          }(userItem
-                                                                              .username),
-                                                                          'ㅤ',
+                                                                          Container(
+                                                                        height:
+                                                                            20.0,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondary,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(50.0),
+                                                                          shape:
+                                                                              BoxShape.rectangle,
                                                                         ),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .override(
-                                                                              fontFamily: 'Readex Pro',
-                                                                              color: FlutterFlowTheme.of(context).secondaryText,
-                                                                              fontSize: 12.0,
-                                                                              letterSpacing: 0.0,
+                                                                        child:
+                                                                            Align(
+                                                                          alignment: const AlignmentDirectional(
+                                                                              0.0,
+                                                                              0.0),
+                                                                          child:
+                                                                              Padding(
+                                                                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                                6.0,
+                                                                                0.0,
+                                                                                6.0,
+                                                                                0.0),
+                                                                            child:
+                                                                                Text(
+                                                                              valueOrDefault<String>(
+                                                                                userItem.rating.toString(),
+                                                                                '0',
+                                                                              ),
+                                                                              style: FlutterFlowTheme.of(context).titleMedium.override(
+                                                                                    fontFamily: 'Readex Pro',
+                                                                                    fontSize: 13.0,
+                                                                                    letterSpacing: 0.0,
+                                                                                  ),
                                                                             ),
+                                                                          ),
+                                                                        ),
                                                                       ),
                                                                     ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            20.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            5.0),
+                                                                    child: Text(
+                                                                      valueOrDefault<
+                                                                          String>(
+                                                                        userItem
+                                                                            .alias,
+                                                                        'ㅤ',
+                                                                      ),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .titleLarge
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            fontSize:
+                                                                                18.0,
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            20.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                    child: Text(
+                                                                      valueOrDefault<
+                                                                          String>(
+                                                                        (String
+                                                                            username) {
+                                                                          return '@$username';
+                                                                        }(userItem
+                                                                            .username),
+                                                                        'ㅤ',
+                                                                      ),
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Readex Pro',
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).secondaryText,
+                                                                            fontSize:
+                                                                                12.0,
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
-                                                    );
-                                                  }),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ].divide(const SizedBox(height: 20.0)),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: const AlignmentDirectional(0.0, 1.0),
-                                    child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          15.0, 0.0, 15.0, 15.0),
-                                      child: FutureBuilder<ApiCallResponse>(
-                                        future: UserGroup.getContactsCall.call(
-                                          userId: FFAppState().user.id,
-                                        ),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 50.0,
-                                                height: 50.0,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                  ),
-                                                ),
+                                                    ),
+                                                  );
+                                                }),
                                               ),
                                             );
-                                          }
-                                          final dropDownGetContactsResponse =
-                                              snapshot.data!;
-                                          return FlutterFlowDropDown<int>(
-                                            controller: _model
-                                                    .dropDownValueController ??=
-                                                FormFieldController<int>(
-                                              _model.dropDownValue ??= null,
-                                            ),
-                                            options: List<int>.from(
-                                                (dropDownGetContactsResponse
-                                                            .jsonBody
-                                                            .toList()
-                                                            .map<UserStruct?>(
-                                                                UserStruct
-                                                                    .maybeFromMap)
-                                                            .toList()
-                                                        as Iterable<
-                                                            UserStruct?>)
-                                                    .withoutNulls
-                                                    .map((e) => e.id)
-                                                    .toList()),
-                                            optionLabels:
-                                                (dropDownGetContactsResponse
-                                                            .jsonBody
-                                                            .toList()
-                                                            .map<UserStruct?>(
-                                                                UserStruct
-                                                                    .maybeFromMap)
-                                                            .toList()
-                                                        as Iterable<
-                                                            UserStruct?>)
-                                                    .withoutNulls
-                                                    .map((e) => e.username)
-                                                    .toList(),
-                                            onChanged: (val) async {
-                                              setState(() =>
-                                                  _model.dropDownValue = val);
-                                              _model.addToChatRes =
-                                                  await AddToChatCall.call(
-                                                chatId: widget.chat?.id,
-                                                userId: _model.dropDownValue,
-                                                authToken:
-                                                    FFAppState().authToken,
-                                              );
-                                              if ((_model.addToChatRes
-                                                      ?.succeeded ??
-                                                  true)) {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      'Участник добавлен',
-                                                      style: TextStyle(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                      ),
-                                                    ),
-                                                    duration: const Duration(
-                                                        milliseconds: 2000),
-                                                    backgroundColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .secondary,
-                                                  ),
-                                                );
-                                                setState(() {
-                                                  _model.seeingParticipants =
-                                                      false;
-                                                });
-                                              } else {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      'Не удалось добавить',
-                                                      style: TextStyle(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                      ),
-                                                    ),
-                                                    duration: const Duration(
-                                                        milliseconds: 2000),
-                                                    backgroundColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .error,
-                                                  ),
-                                                );
-                                              }
-
-                                              setState(() {});
-                                            },
-                                            width: 300.0,
-                                            height: 56.0,
-                                            textStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                            hintText:
-                                                FFLocalizations.of(context)
-                                                    .getText(
-                                              '47q4ggqs' /* Добавить пользователя... */,
-                                            ),
-                                            icon: Icon(
-                                              Icons.keyboard_arrow_down_rounded,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              size: 24.0,
-                                            ),
-                                            fillColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondaryBackground,
-                                            elevation: 2.0,
-                                            borderColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .alternate,
-                                            borderWidth: 2.0,
-                                            borderRadius: 8.0,
-                                            margin:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 4.0, 16.0, 4.0),
-                                            hidesUnderline: true,
-                                            isOverButton: true,
-                                            isSearchable: false,
-                                            isMultiSelect: false,
-                                          );
-                                        },
+                                          },
+                                        ),
                                       ),
+                                    ].divide(const SizedBox(height: 20.0)),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: const AlignmentDirectional(0.0, 1.0),
+                                  child: Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        15.0, 0.0, 15.0, 15.0),
+                                    child: FutureBuilder<ApiCallResponse>(
+                                      future: UserGroup.getContactsCall.call(
+                                        userId: FFAppState().user.id,
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        final dropDownGetContactsResponse =
+                                            snapshot.data!;
+                                        return FlutterFlowDropDown<int>(
+                                          controller:
+                                              _model.dropDownValueController ??=
+                                                  FormFieldController<int>(
+                                            _model.dropDownValue ??= null,
+                                          ),
+                                          options: List<int>.from(
+                                              (dropDownGetContactsResponse
+                                                          .jsonBody
+                                                          .toList()
+                                                          .map<UserStruct?>(
+                                                              UserStruct
+                                                                  .maybeFromMap)
+                                                          .toList()
+                                                      as Iterable<UserStruct?>)
+                                                  .withoutNulls
+                                                  .map((e) => e.id)
+                                                  .toList()),
+                                          optionLabels:
+                                              (dropDownGetContactsResponse
+                                                          .jsonBody
+                                                          .toList()
+                                                          .map<UserStruct?>(
+                                                              UserStruct
+                                                                  .maybeFromMap)
+                                                          .toList()
+                                                      as Iterable<UserStruct?>)
+                                                  .withoutNulls
+                                                  .map((e) => e.username)
+                                                  .toList(),
+                                          onChanged: (val) async {
+                                            setState(() =>
+                                                _model.dropDownValue = val);
+                                            _model.addToChatRes =
+                                                await AddToChatCall.call(
+                                              chatId: widget.chat?.id,
+                                              userId: _model.dropDownValue,
+                                              authToken: FFAppState().authToken,
+                                            );
+                                            if ((_model
+                                                    .addToChatRes?.succeeded ??
+                                                true)) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Участник добавлен',
+                                                    style: TextStyle(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                    ),
+                                                  ),
+                                                  duration: const Duration(
+                                                      milliseconds: 2000),
+                                                  backgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .secondary,
+                                                ),
+                                              );
+                                              setState(() {
+                                                _model.seeingParticipants =
+                                                    false;
+                                              });
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Не удалось добавить',
+                                                    style: TextStyle(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                    ),
+                                                  ),
+                                                  duration: const Duration(
+                                                      milliseconds: 2000),
+                                                  backgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .error,
+                                                ),
+                                              );
+                                            }
+
+                                            setState(() {});
+                                          },
+                                          width: 300.0,
+                                          height: 56.0,
+                                          textStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          hintText: FFLocalizations.of(context)
+                                              .getText(
+                                            '47q4ggqs' /* Добавить пользователя... */,
+                                          ),
+                                          icon: Icon(
+                                            Icons.keyboard_arrow_down_rounded,
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                            size: 24.0,
+                                          ),
+                                          fillColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryBackground,
+                                          elevation: 2.0,
+                                          borderColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .alternate,
+                                          borderWidth: 2.0,
+                                          borderRadius: 8.0,
+                                          margin:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 4.0, 16.0, 4.0),
+                                          hidesUnderline: true,
+                                          isOverButton: true,
+                                          isSearchable: false,
+                                          isMultiSelect: false,
+                                        );
+                                      },
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

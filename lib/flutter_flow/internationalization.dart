@@ -481,19 +481,19 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'ru': 'Unsupported message data. Please update application',
       'en': '',
     },
-    '6jfu5voj': {
+    '9ifla6gj': {
       'ru': 'Судоку',
       'en': 'Sudoku',
     },
-    'yr6o0721': {
+    '19tid3vy': {
       'ru': 'Решить',
       'en': '',
     },
-    'q0fldfs6': {
+    '71tq953q': {
       'ru': 'Контакт',
       'en': 'Contact',
     },
-    'ngimtk78': {
+    'svbptldj': {
       'ru': 'Unsupported message data. Please update application',
       'en': '',
     },
